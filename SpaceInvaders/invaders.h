@@ -1,0 +1,46 @@
+#include <allegro5/allegro.h>
+
+//constantes
+extern const int SCREEN_W;
+extern const int SCREEN_H;
+extern const int GRASS_H;
+extern const float FPS;
+extern const int NAVE_W;
+extern const int NAVE_H;
+
+extern const int ALIEN_W;
+extern const int ALIEN_H;
+
+//estruturas
+typedef struct Nave
+{
+	float x;
+	ALLEGRO_COLOR cor;
+	float vel;
+	int dir, esq;
+
+} Nave;
+
+typedef struct Alien {
+	float x, y;
+	float x_vel, y_vel;
+	ALLEGRO_COLOR cor;
+} Alien;
+
+
+//allegroFunctions
+int initialize_Allegro(ALLEGRO_DISPLAY **display,ALLEGRO_EVENT_QUEUE **event_queue,ALLEGRO_TIMER **timer);
+
+
+//criatingInvadersElements
+void initNave(Nave *nave);
+void initAlien (Alien *alien);
+void draw_alien(Alien alien);
+void draw_scenario();
+void draw_nave(Nave nave);
+
+
+//updatingInvadersElements
+void update_nave(Nave *nave);
+void update_alien (Alien *alien);
+int colisao_alien_solo(Alien alien);
