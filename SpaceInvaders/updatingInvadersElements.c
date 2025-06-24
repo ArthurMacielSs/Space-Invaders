@@ -15,21 +15,38 @@ void update_nave(Nave *nave)
 	}
 }
 
-void update_alien (Alien *alien){
+/*void update_alien (Alien *alien){
 // alien x vel fica neg
 	if(alien->x + ALIEN_W + alien->x_vel > SCREEN_W || alien->x + alien->x_vel < 0) {
 		alien->y += alien->y_vel;
 		alien->x_vel *= -1;
 	}
 	alien->x += alien->x_vel;
-}
-void update_all_aliens (int linha, int coluna, Alien bloco [linha][coluna]){
-	for(int i=0; i<linha; i++){
-		for(int j=0; j<coluna; j++){
-			update_alien(&bloco[i][j]);
+}*/
 
-		}
-	}
+void update_all_aliens(int linha, int coluna, Alien bloco[linha][coluna]) {
+    int should_reverse = 0;
+    for (int i = 0; i < linha; i++) {
+        for (int j = 0; j < coluna; j++) {
+            Alien *teste = &bloco[i][j];
+            if ((teste->x + ALIEN_W + teste->x_vel > SCREEN_W) || (teste->x + teste->x_vel < 0)) {
+                should_reverse = 1;
+                break;
+            }
+        }
+        if (should_reverse) break;
+    }
+
+    for (int i = 0; i < linha; i++) {
+        for (int j = 0; j < coluna; j++) {
+            Alien *teste = &bloco[i][j];
+            if (should_reverse) {
+                teste->y += teste->y_vel;
+                teste->x_vel *= -1;
+            }
+            teste->x += teste->x_vel;
+        }
+    }
 }
 int colisao_alien_solo(Alien alien){
 	if(alien.y + ALIEN_H>SCREEN_H-GRASS_H){

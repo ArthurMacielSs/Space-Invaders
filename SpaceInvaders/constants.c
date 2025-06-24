@@ -12,5 +12,5 @@ const int ALIEN_H = 25;
 
 const int ROW_ALIEN = 4;
 const int COLUMN_ALIEN=5;
-const int ALIEN_X_SPEED = 10;
+const int ALIEN_X_SPEED = 3;
 const int ALIEN_SPACEMENT=30;

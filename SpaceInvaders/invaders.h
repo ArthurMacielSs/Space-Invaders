@@ -51,7 +51,7 @@ void drawAllAliens (int linha, int coluna, Alien bloco [linha][coluna]);
 
 //updatingInvadersElements
 void update_nave(Nave *nave);
-void update_alien (Alien *alien);
+//void update_alien (Alien *alien);
 int colisao_alien_solo(Alien alien);
 void update_all_aliens (int linha, int coluna, Alien bloco [linha][coluna]);
 int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco [linha][coluna] );
