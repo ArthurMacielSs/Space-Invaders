@@ -84,3 +84,12 @@ void update_shots(int tam,struct Shot shots[tam]) {
         }
     }
 }
+
+void shot_hit(struct Shot shot, int linha, int coluna, Alien bloco [linha][coluna]){
+	for(int i=0; i<linha; i++){
+		for(int j=0; j<coluna; j++){
+			if(shot.x-2<=bloco[i][j])
+		}
+	}
+
+}
