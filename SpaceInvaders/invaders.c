@@ -21,8 +21,8 @@ int main(int argc, char **argv)
 	Nave nave;
 	initNave(&nave);
 
-	Alien alien;
-	initAlien(&alien);
+	Alien alien[ROW_ALIEN][COLUMN_ALIEN];
+	initAllAliens(ROW_ALIEN, COLUMN_ALIEN,alien);
 
 	int playing = 1;
 	while (playing)
@@ -34,18 +34,22 @@ int main(int argc, char **argv)
 		{
 
 			draw_scenario();
+			
+			draw_nave(nave);
+			drawAllAliens(ROW_ALIEN,COLUMN_ALIEN,alien);
+			
+			
 
 			update_nave(&nave);
-
-			update_alien(&alien);
+			update_all_aliens(ROW_ALIEN,COLUMN_ALIEN,alien);
+			
+			
 
 			// desenha nave em cima do cenario (dps)
 
-			draw_nave(nave);
+			
 
-			draw_alien(alien);
-
-			playing = !colisao_alien_solo(alien);
+			playing = !colisao_all_alien_solo(playing,ROW_ALIEN, COLUMN_ALIEN,alien);
 
 			al_flip_display();
 			if (al_get_timer_count(timer) % (int)FPS == 0)

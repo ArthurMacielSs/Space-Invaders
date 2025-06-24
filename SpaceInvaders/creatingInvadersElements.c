@@ -14,17 +14,40 @@ void initNave(Nave *nave)
 	nave->cor = al_map_rgb(0, 0, 255);
 }
 
-void initAlien (Alien *alien){
-	alien->x=0;
-	alien->y=0;
-	alien->x_vel=1;
+void initAlien (Alien *alien, int x, int y){
+	alien->x=x;
+	alien->y=y;
+	alien->x_vel=ALIEN_X_SPEED;
 	alien->y_vel= ALIEN_H;
 	alien->cor=al_map_rgb(rand()%256,rand()%256,rand()%256);
+}
+
+void initAllAliens (int linha, int coluna,Alien bloco[linha][coluna]){
+	int x=0, y=0;
+	for(int i=0; i<linha; i++){
+		for(int j=0; j<coluna; j++){
+			initAlien(&bloco[i][j],x, y);
+			x = x + ALIEN_W + ALIEN_SPACEMENT;
+			
+		}
+		x=0;
+		y = y + ALIEN_H + ALIEN_SPACEMENT;
+	}
+
 }
 
 
 void draw_alien(Alien alien){
 	al_draw_filled_rectangle(alien.x, alien.y, alien.x+ALIEN_W, alien.y + ALIEN_H, alien.cor);
+}
+
+void drawAllAliens (int linha, int coluna, Alien bloco [linha][coluna]){
+	for(int i=0; i<linha; i++){
+		for(int j=0; j<coluna; j++){
+			draw_alien(bloco[i][j]);
+
+		}
+	}
 }
 
 void draw_scenario()

@@ -11,6 +11,12 @@ extern const int NAVE_H;
 extern const int ALIEN_W;
 extern const int ALIEN_H;
 
+extern const int ROW_ALIEN;
+extern const int COLUMN_ALIEN;
+extern const int ALIEN_X_SPEED;
+extern const int ALIEN_SPACEMENT;
+
+
 //estruturas
 typedef struct Nave
 {
@@ -34,13 +40,18 @@ int initialize_Allegro(ALLEGRO_DISPLAY **display,ALLEGRO_EVENT_QUEUE **event_que
 
 //criatingInvadersElements
 void initNave(Nave *nave);
-void initAlien (Alien *alien);
+void initAlien (Alien *alien, int x, int y);
 void draw_alien(Alien alien);
 void draw_scenario();
 void draw_nave(Nave nave);
+void initAllAliens (int linha, int coluna,Alien bloco[linha][coluna]);
+void drawAllAliens (int linha, int coluna, Alien bloco [linha][coluna]);
+
 
 
 //updatingInvadersElements
 void update_nave(Nave *nave);
 void update_alien (Alien *alien);
 int colisao_alien_solo(Alien alien);
+void update_all_aliens (int linha, int coluna, Alien bloco [linha][coluna]);
+int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco [linha][coluna] );

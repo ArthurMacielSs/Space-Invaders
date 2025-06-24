@@ -1,4 +1,5 @@
 #include "invaders.h"
+#include <stdio.h>
 #include <allegro5/allegro_primitives.h>
 
 
@@ -22,12 +23,35 @@ void update_alien (Alien *alien){
 	}
 	alien->x += alien->x_vel;
 }
+void update_all_aliens (int linha, int coluna, Alien bloco [linha][coluna]){
+	for(int i=0; i<linha; i++){
+		for(int j=0; j<coluna; j++){
+			update_alien(&bloco[i][j]);
 
+		}
+	}
+}
 int colisao_alien_solo(Alien alien){
 	if(alien.y + ALIEN_H>SCREEN_H-GRASS_H){
+		printf("foi \n");
 		return 1;
 	}
 	else{
 		return 0;
 	}
+}
+
+int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco [linha][coluna] ){
+	playng=0;
+	for(int i=0; i<linha; i++){
+		for(int j=0; j<coluna; j++){
+			playng =colisao_alien_solo(bloco[i][j]);
+			if(playng==1){
+				break;
+				return playng;
+			}
+
+		}
+	}
+	return playng;
 }

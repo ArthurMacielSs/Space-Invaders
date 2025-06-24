@@ -3,9 +3,6 @@
 #include <allegro5/allegro_primitives.h>
 #include "invaders.h"
 
-
-
-
 int initialize_Allegro(ALLEGRO_DISPLAY **display, 
                       ALLEGRO_EVENT_QUEUE **event_queue, 
                       ALLEGRO_TIMER **timer)
