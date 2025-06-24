@@ -16,7 +16,8 @@ int main(int argc, char **argv)
     // Handle error
     return -1;
 }
-
+	struct Shot shots[MAX_SHOT];
+	init_shots(MAX_SHOT,shots);
 
 	Nave nave;
 	initNave(&nave);
@@ -37,11 +38,12 @@ int main(int argc, char **argv)
 			
 			draw_nave(nave);
 			drawAllAliens(ROW_ALIEN,COLUMN_ALIEN,alien);
-			
+			draw_shots(MAX_SHOT,shots);
 			
 
 			update_nave(&nave);
 			update_all_aliens(ROW_ALIEN,COLUMN_ALIEN,alien);
+			update_shots(MAX_SHOT, shots);
 			
 			
 
@@ -76,6 +78,10 @@ int main(int argc, char **argv)
 			case ALLEGRO_KEY_D:
 				nave.dir = 1;
 				break;
+			
+			case ALLEGRO_KEY_SPACE:
+				fire_shot(MAX_SHOT, shots,nave.x, (SCREEN_H-GRASS_H-NAVE_H));
+			break;
 
 			default:
 				break;
@@ -93,6 +99,10 @@ int main(int argc, char **argv)
 
 			case ALLEGRO_KEY_D:
 				nave.dir = 0;
+				break;
+
+			case ALLEGRO_KEY_SPACE:
+				printf("\n espaco solto");
 				break;
 
 			default:

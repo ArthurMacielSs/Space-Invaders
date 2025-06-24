@@ -16,6 +16,8 @@ extern const int COLUMN_ALIEN;
 extern const int ALIEN_X_SPEED;
 extern const int ALIEN_SPACEMENT;
 
+extern const int MAX_SHOT;
+
 
 //estruturas
 typedef struct Nave
@@ -33,6 +35,12 @@ typedef struct Alien {
 	ALLEGRO_COLOR cor;
 } Alien;
 
+ struct Shot {
+    float x, y;
+    float speed;
+    int active;
+};
+
 
 //allegroFunctions
 int initialize_Allegro(ALLEGRO_DISPLAY **display,ALLEGRO_EVENT_QUEUE **event_queue,ALLEGRO_TIMER **timer);
@@ -47,6 +55,9 @@ void draw_nave(Nave nave);
 void initAllAliens (int linha, int coluna,Alien bloco[linha][coluna]);
 void drawAllAliens (int linha, int coluna, Alien bloco [linha][coluna]);
 
+void init_shots(int tam,struct Shot shots[tam]);
+void fire_shot(int tam,struct Shot shots[tam],float ship_x, float ship_y);
+void draw_shots(int tam,struct Shot shots[tam]);
 
 
 //updatingInvadersElements
@@ -55,3 +66,4 @@ void update_nave(Nave *nave);
 int colisao_alien_solo(Alien alien);
 void update_all_aliens (int linha, int coluna, Alien bloco [linha][coluna]);
 int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco [linha][coluna] );
+void update_shots(int tam,struct Shot shots[tam]);

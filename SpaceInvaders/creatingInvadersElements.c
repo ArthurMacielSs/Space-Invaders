@@ -62,3 +62,29 @@ void draw_nave(Nave nave)
 	float y_base = SCREEN_H - GRASS_H / 2;
 	al_draw_filled_triangle(nave.x, y_base - NAVE_H, nave.x - NAVE_W / 2, y_base, nave.x + NAVE_W / 2, y_base, nave.cor);
 }
+
+void init_shots(int tam,struct Shot shots[tam]) {
+    for (int i = 0; i < MAX_SHOT; i++) {
+        shots[i].active = 0;
+    }
+}
+
+void fire_shot(int tam,struct Shot shots[tam],float ship_x, float ship_y) {
+    for (int i = 0; i < tam; i++) {
+        if (!shots[i].active) {
+            shots[i].x = ship_x;
+            shots[i].y = ship_y;
+            shots[i].speed = -10;  // negative because it goes up
+            shots[i].active = 1;
+            break;
+        }
+    }
+}
+
+void draw_shots(int tam,struct Shot shots[tam]) {
+    for (int i = 0; i < tam; i++) {
+        if (shots[i].active) {
+            al_draw_filled_rectangle(shots[i].x - 2, shots[i].y, shots[i].x + 2, shots[i].y + 10, al_map_rgb(255, 255, 0));
+        }
+    }
+}

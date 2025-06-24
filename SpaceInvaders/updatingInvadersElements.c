@@ -72,3 +72,15 @@ int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco [linha
 	}
 	return playng;
 }
+
+//pq não usa ponteiro ou referencia
+void update_shots(int tam,struct Shot shots[tam]) {
+    for (int i = 0; i < tam; i++) {
+        if (shots[i].active) {
+            shots[i].y += shots[i].speed;
+            if (shots[i].y < 0) {
+                shots[i].active = 0;  
+            }
+        }
+    }
+}
