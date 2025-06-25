@@ -58,6 +58,7 @@ int main(int argc, char **argv)
 			}
 			if(playing){
 				playing= colisao_all_alien_nave(ROW_ALIEN, COLUMN_ALIEN, alien, nave);
+				
 			}
 
 			al_flip_display();

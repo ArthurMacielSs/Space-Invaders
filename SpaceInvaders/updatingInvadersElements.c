@@ -50,6 +50,7 @@ void update_all_aliens(int linha, int coluna, Alien bloco[linha][coluna]) {
 }
 int colisao_alien_solo(Alien alien){
 	if(alien.y + ALIEN_H>=SCREEN_H-GRASS_H){
+		printf("\n morreu por grama");
 		return 1;
 	}
 	else{
@@ -83,11 +84,19 @@ int colisao_alien_nave(Alien alien, Nave nave){
 }
 
 int colisao_all_alien_nave(int linha, int coluna, Alien bloco[linha][coluna], Nave nave){
-	int playing=0;
+	int playing=1;
 	for(int i=0; i<linha; i++){
 		for(int j=0; j<coluna; j++){
 			playing=colisao_alien_nave(bloco[i][j], nave);
+			if(playing==0){
+				return playing;
+				break;
+			}
 		}
+		if(playing==0){
+				return playing;
+				break;
+			}
 	}
 	return playing;
 }
