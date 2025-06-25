@@ -32,9 +32,13 @@ int main(int argc, char **argv)
 		al_wait_for_event(event_queue, &ev);
 		if (ev.type == ALLEGRO_EVENT_TIMER)
 		{
+			update_nave(&nave);
+			update_all_aliens(ROW_ALIEN,COLUMN_ALIEN,alien);
+			update_shots(&shots);
+			shot_hit(&shots,ROW_ALIEN,COLUMN_ALIEN,alien);
+
 
 			draw_scenario();
-			
 			draw_nave(nave);
 			playing=drawAllAliens(ROW_ALIEN,COLUMN_ALIEN,alien);
 			draw_shots(&shots);
@@ -42,10 +46,7 @@ int main(int argc, char **argv)
 			printf("\n %d playing" ,playing);
 			
 			
-			update_nave(&nave);
-			update_all_aliens(ROW_ALIEN,COLUMN_ALIEN,alien);
-			update_shots(&shots);
-			shot_hit(&shots,ROW_ALIEN,COLUMN_ALIEN,alien);
+			
 			
 
 			// desenha nave em cima do cenario (dps)

@@ -49,8 +49,7 @@ void update_all_aliens(int linha, int coluna, Alien bloco[linha][coluna]) {
     }
 }
 int colisao_alien_solo(Alien alien){
-	if(alien.y + ALIEN_H>SCREEN_H-GRASS_H){
-		printf("foi \n");
+	if(alien.y + ALIEN_H>=SCREEN_H-GRASS_H){
 		return 1;
 	}
 	else{
