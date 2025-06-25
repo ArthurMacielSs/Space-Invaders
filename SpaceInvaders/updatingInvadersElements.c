@@ -74,24 +74,30 @@ int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco [linha
 }
 
 //pq não usa ponteiro ou referencia
-void update_shots(int tam,struct Shot shots[tam]) {
-    for (int i = 0; i < tam; i++) {
-        if (shots[i].active) {
-            shots[i].y += shots[i].speed;
-            if (shots[i].y < 0) {
-                shots[i].active = 0;  
+void update_shots(struct Shot *shots) {
+        if (shots->active) {
+            shots->y += shots->speed;
+            if (shots->y < 0) {
+                shots->active = 0;  
             }
         }
     }
-}
 
-void shot_hit(struct Shot shot, int linha, int coluna, Alien bloco [linha][coluna]){
+
+void shot_hit(struct Shot *shot, int linha, int coluna, Alien bloco [linha][coluna]){
+	if(shot->active){
 	for(int i=0; i<linha; i++){
 		for(int j=0; j<coluna; j++){
-			if(((shot.y<=bloco[i][j].y)&& shot.y>=bloco[i][j].y+ALIEN_H)&&(shot.x+2>=bloco[i][j].x)&&(shot.x+2<=bloco[i][j].x+ALIEN_W))
-			printf("\n bateu");
-			shot.active=0;
+			if(((shot->y>=bloco[i][j].y)&& (shot->y<=bloco[i][j].y+ALIEN_H))&&((shot->x+2>=bloco[i][j].x)&&(shot->x+2<=bloco[i][j].x+ALIEN_W))){
+			printf("\n bateu %d %d", i, j);
+			//continue;
+			//break;
+			shot->active=0;
+			printf("\n %d",shot->active);
 		}
+		
 	}
+}
 
+}
 }

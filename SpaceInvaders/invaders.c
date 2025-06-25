@@ -16,8 +16,8 @@ int main(int argc, char **argv)
     // Handle error
     return -1;
 }
-	struct Shot shots[MAX_SHOT];
-	init_shots(MAX_SHOT,shots);
+	struct Shot shots;
+	init_shots(&shots);
 
 	Nave nave;
 	initNave(&nave);
@@ -28,7 +28,6 @@ int main(int argc, char **argv)
 	int playing = 1;
 	while (playing)
 	{
-
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev);
 		if (ev.type == ALLEGRO_EVENT_TIMER)
@@ -38,13 +37,13 @@ int main(int argc, char **argv)
 			
 			draw_nave(nave);
 			drawAllAliens(ROW_ALIEN,COLUMN_ALIEN,alien);
-			draw_shots(MAX_SHOT,shots);
+			draw_shots(&shots);
 			
-
+			
 			update_nave(&nave);
 			update_all_aliens(ROW_ALIEN,COLUMN_ALIEN,alien);
-			update_shots(MAX_SHOT, shots);
-			
+			update_shots(&shots);
+			shot_hit(&shots,ROW_ALIEN,COLUMN_ALIEN,alien);
 			
 
 			// desenha nave em cima do cenario (dps)
@@ -80,7 +79,7 @@ int main(int argc, char **argv)
 				break;
 			
 			case ALLEGRO_KEY_SPACE:
-				fire_shot(MAX_SHOT, shots,nave.x, (SCREEN_H-GRASS_H-NAVE_H));
+				fire_shot(&shots,nave.x, (SCREEN_H-GRASS_H-NAVE_H));
 			break;
 
 			default:
@@ -119,3 +118,6 @@ int main(int argc, char **argv)
 	// pode mandar quantos eventos quiser mas todos ficam no final da fila
 	// o programa é um loop que verifica a fila de eventos e faz ela
 }
+
+
+// pq qnd acessa vetor n precisa

@@ -16,7 +16,8 @@ extern const int COLUMN_ALIEN;
 extern const int ALIEN_X_SPEED;
 extern const int ALIEN_SPACEMENT;
 
-extern const int MAX_SHOT;
+const int SHOT_SPEED;
+
 
 
 //estruturas
@@ -33,6 +34,7 @@ typedef struct Alien {
 	float x, y;
 	float x_vel, y_vel;
 	ALLEGRO_COLOR cor;
+	
 } Alien;
 
  struct Shot {
@@ -55,9 +57,9 @@ void draw_nave(Nave nave);
 void initAllAliens (int linha, int coluna,Alien bloco[linha][coluna]);
 void drawAllAliens (int linha, int coluna, Alien bloco [linha][coluna]);
 
-void init_shots(int tam,struct Shot shots[tam]);
-void fire_shot(int tam,struct Shot shots[tam],float ship_x, float ship_y);
-void draw_shots(int tam,struct Shot shots[tam]);
+void init_shots(struct Shot *shots);
+void fire_shot(struct Shot *shots,float ship_x, float ship_y);
+void draw_shots(struct Shot *shots);
 
 
 //updatingInvadersElements
@@ -66,4 +68,5 @@ void update_nave(Nave *nave);
 int colisao_alien_solo(Alien alien);
 void update_all_aliens (int linha, int coluna, Alien bloco [linha][coluna]);
 int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco [linha][coluna] );
-void update_shots(int tam,struct Shot shots[tam]);
+void update_shots(struct Shot *shots);
+void shot_hit(struct Shot *shot, int linha, int coluna, Alien bloco [linha][coluna]);
