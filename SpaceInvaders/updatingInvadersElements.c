@@ -71,7 +71,26 @@ int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco [linha
 	}
 	return playng;
 }
+int colisao_alien_nave(Alien alien, Nave nave){
+	if((alien.y+ALIEN_H>=nave.y)&&(((alien.x>=nave.x-NAVE_W/2)&&(alien.x<=nave.x+NAVE_W/2))||((alien.x+ALIEN_W>=nave.x-NAVE_W/2)&&(alien.x+ALIEN_W<=nave.x+NAVE_W/2)))){
+		printf("\ncolidiu");
+		return 0;
+	}
+	else{
+		return 1;
+	}
 
+}
+
+int colisao_all_alien_nave(int linha, int coluna, Alien bloco[linha][coluna], Nave nave){
+	int playing=0;
+	for(int i=0; i<linha; i++){
+		for(int j=0; j<coluna; j++){
+			playing=colisao_alien_nave(bloco[i][j], nave);
+		}
+	}
+	return playing;
+}
 //pq não usa ponteiro ou referencia
 void update_shots(struct Shot *shots) {
         if (shots->active) {

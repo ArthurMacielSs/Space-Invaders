@@ -8,6 +8,7 @@
 void initNave(Nave *nave)
 {
 	nave->x = SCREEN_W / 2;
+	nave->y=SCREEN_H-GRASS_H/2-NAVE_H;
 	nave->vel = SHIP_SPEED;
 	nave->dir = 0;
 	nave->esq = 0;

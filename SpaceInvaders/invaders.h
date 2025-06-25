@@ -25,7 +25,7 @@ const int SHOT_SPEED;
 //estruturas
 typedef struct Nave
 {
-	float x;
+	float x, y;
 	ALLEGRO_COLOR cor;
 	float vel;
 	int dir, esq;
@@ -72,3 +72,5 @@ void update_all_aliens (int linha, int coluna, Alien bloco [linha][coluna]);
 int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco [linha][coluna] );
 void update_shots(struct Shot *shots);
 void shot_hit(struct Shot *shot, int linha, int coluna, Alien bloco [linha][coluna]);
+int colisao_alien_nave(Alien alien, Nave nave);
+int colisao_all_alien_nave(int linha, int coluna, Alien bloco[linha][coluna], Nave nave);
