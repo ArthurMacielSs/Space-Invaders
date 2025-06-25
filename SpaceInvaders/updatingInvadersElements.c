@@ -88,15 +88,15 @@ void shot_hit(struct Shot *shot, int linha, int coluna, Alien bloco [linha][colu
 	if(shot->active){
 	for(int i=0; i<linha; i++){
 		for(int j=0; j<coluna; j++){
+			if(bloco[i][j].is_active){
 			if(((shot->y>=bloco[i][j].y)&& (shot->y<=bloco[i][j].y+ALIEN_H))&&((shot->x+2>=bloco[i][j].x)&&(shot->x+2<=bloco[i][j].x+ALIEN_W))){
-			printf("\n bateu %d %d", i, j);
-			//continue;
-			//break;
 			shot->active=0;
-			printf("\n %d",shot->active);
+			bloco[i][j].is_active=0;
+			printf("\n %d",bloco[i][j].is_active);
 		}
 		
 	}
+}
 }
 
 }

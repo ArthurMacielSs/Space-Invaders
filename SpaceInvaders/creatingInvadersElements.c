@@ -8,7 +8,7 @@
 void initNave(Nave *nave)
 {
 	nave->x = SCREEN_W / 2;
-	nave->vel = 1;
+	nave->vel = SHIP_SPEED;
 	nave->dir = 0;
 	nave->esq = 0;
 	nave->cor = al_map_rgb(0, 0, 255);
@@ -20,6 +20,7 @@ void initAlien (Alien *alien, int x, int y){
 	alien->x_vel=ALIEN_X_SPEED;
 	alien->y_vel= ALIEN_H;
 	alien->cor=al_map_rgb(rand()%256,rand()%256,rand()%256);
+	alien->is_active=1;
 }
 
 void initAllAliens (int linha, int coluna,Alien bloco[linha][coluna]){
@@ -44,8 +45,9 @@ void draw_alien(Alien alien){
 void drawAllAliens (int linha, int coluna, Alien bloco [linha][coluna]){
 	for(int i=0; i<linha; i++){
 		for(int j=0; j<coluna; j++){
+			if(bloco[i][j].is_active){
 			draw_alien(bloco[i][j]);
-
+			}
 		}
 	}
 }

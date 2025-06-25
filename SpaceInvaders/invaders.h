@@ -5,8 +5,10 @@ extern const int SCREEN_W;
 extern const int SCREEN_H;
 extern const int GRASS_H;
 extern const float FPS;
+
 extern const int NAVE_W;
 extern const int NAVE_H;
+const int SHIP_SPEED;
 
 extern const int ALIEN_W;
 extern const int ALIEN_H;
@@ -34,7 +36,7 @@ typedef struct Alien {
 	float x, y;
 	float x_vel, y_vel;
 	ALLEGRO_COLOR cor;
-	
+	int is_active;
 } Alien;
 
  struct Shot {
