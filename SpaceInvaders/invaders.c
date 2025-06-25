@@ -36,8 +36,10 @@ int main(int argc, char **argv)
 			draw_scenario();
 			
 			draw_nave(nave);
-			drawAllAliens(ROW_ALIEN,COLUMN_ALIEN,alien);
+			playing=drawAllAliens(ROW_ALIEN,COLUMN_ALIEN,alien);
 			draw_shots(&shots);
+
+			printf("\n %d playing" ,playing);
 			
 			
 			update_nave(&nave);
@@ -49,8 +51,9 @@ int main(int argc, char **argv)
 			// desenha nave em cima do cenario (dps)
 
 			
-
+			if(playing){
 			playing = !colisao_all_alien_solo(playing,ROW_ALIEN, COLUMN_ALIEN,alien);
+			}
 
 			al_flip_display();
 			if (al_get_timer_count(timer) % (int)FPS == 0)

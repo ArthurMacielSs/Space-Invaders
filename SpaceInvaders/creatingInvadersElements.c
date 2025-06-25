@@ -42,14 +42,18 @@ void draw_alien(Alien alien){
 	al_draw_filled_rectangle(alien.x, alien.y, alien.x+ALIEN_W, alien.y + ALIEN_H, alien.cor);
 }
 
-void drawAllAliens (int linha, int coluna, Alien bloco [linha][coluna]){
+int drawAllAliens (int linha, int coluna, Alien bloco[linha][coluna]){
+	int verifica=0;
 	for(int i=0; i<linha; i++){
 		for(int j=0; j<coluna; j++){
 			if(bloco[i][j].is_active){
 			draw_alien(bloco[i][j]);
+			verifica=1;
 			}
+			
 		}
 	}
+	return verifica;
 }
 
 void draw_scenario()

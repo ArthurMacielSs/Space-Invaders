@@ -57,7 +57,7 @@ void draw_alien(Alien alien);
 void draw_scenario();
 void draw_nave(Nave nave);
 void initAllAliens (int linha, int coluna,Alien bloco[linha][coluna]);
-void drawAllAliens (int linha, int coluna, Alien bloco [linha][coluna]);
+int drawAllAliens (int linha, int coluna, Alien bloco[linha][coluna]);
 
 void init_shots(struct Shot *shots);
 void fire_shot(struct Shot *shots,float ship_x, float ship_y);
