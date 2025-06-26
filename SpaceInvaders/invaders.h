@@ -4,6 +4,10 @@
 #include <stdio.h>
 
 // constantes
+#define PHASES_NUMBER 6
+
+
+
 extern const int SCREEN_W;
 extern const int SCREEN_H;
 extern const int GRASS_H;
@@ -16,12 +20,12 @@ const int SHIP_SPEED;
 extern const int ALIEN_W;
 extern const int ALIEN_H;
 
-extern const int ROW_ALIEN;
-extern const int COLUMN_ALIEN;
-extern const int ALIEN_X_SPEED;
+extern const int ROW_ALIEN[];
+extern const int COLUMN_ALIEN[];
+extern const int ALIEN_X_SPEED[];
 extern const int ALIEN_SPACEMENT;
 
-const int SHOT_SPEED;
+extern const int SHOT_SPEED;
 
 // estruturas
 typedef struct Nave
@@ -55,11 +59,11 @@ int initialize_Allegro(ALLEGRO_DISPLAY **display,
 
 // criatingInvadersElements
 void initNave(Nave *nave);
-void initAlien(Alien *alien, int x, int y);
+void initAlien(Alien *alien, int x, int y, int phase);
 void draw_alien(Alien alien);
 void draw_scenario();
 void draw_nave(Nave nave);
-void initAllAliens(int linha, int coluna, Alien bloco[linha][coluna]);
+void initAllAliens(int linha, int coluna, Alien bloco[linha][coluna], int phase);
 int drawAllAliens(int linha, int coluna, Alien bloco[linha][coluna]);
 
 void init_shots(struct Shot *shots);

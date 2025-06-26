@@ -13,24 +13,24 @@ void initNave(Nave *nave)
 	nave->cor = al_map_rgb(0, 0, 255);
 }
 
-void initAlien(Alien *alien, int x, int y)
+void initAlien(Alien *alien, int x, int y, int phase)
 {
 	alien->x = x;
 	alien->y = y;
-	alien->x_vel = ALIEN_X_SPEED;
+	alien->x_vel = ALIEN_X_SPEED[phase];
 	alien->y_vel = ALIEN_H;
 	alien->cor = al_map_rgb(rand() % 256, rand() % 256, rand() % 256);
 	alien->is_active = 1;
 }
 
-void initAllAliens(int linha, int coluna, Alien bloco[linha][coluna])
+void initAllAliens(int linha, int coluna, Alien bloco[linha][coluna], int phase)
 {
 	int x = 0, y = 0;
 	for (int i = 0; i < linha; i++)
 	{
 		for (int j = 0; j < coluna; j++)
 		{
-			initAlien(&bloco[i][j], x, y);
+			initAlien(&bloco[i][j], x, y, phase);
 			x = x + ALIEN_W + ALIEN_SPACEMENT;
 		}
 		x = 0;

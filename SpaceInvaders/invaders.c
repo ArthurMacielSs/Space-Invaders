@@ -15,9 +15,8 @@ int main(int argc, char **argv)
 
 	FILE *arq;
 
-	struct Shot shots;
-	Nave nave;
-	Alien alien[ROW_ALIEN][COLUMN_ALIEN];
+	
+	
 
 	// rever pq endereço
 	if (initialize_Allegro(&display, &event_queue, &timer, &font) != 0)
@@ -26,16 +25,23 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	init_shots(&shots);
-	initNave(&nave);
-	initAllAliens(ROW_ALIEN, COLUMN_ALIEN, alien);
+	
 
 	char text[50];
 	int playing = 1;
-	int pontuacao = 0, recorde;
+	int pontuacao = 0, recorde, phase=0;
 
 	if (pega_recorde(&arq, &recorde))
-	{
+	{  
+		
+		Alien alien[ROW_ALIEN[phase]][COLUMN_ALIEN[phase]];
+		struct Shot shots;
+		Nave nave;
+
+		init_shots(&shots);
+		initNave(&nave);
+		initAllAliens(ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, phase);
+
 		while (playing)
 		{
 
@@ -44,17 +50,20 @@ int main(int argc, char **argv)
 			if (ev.type == ALLEGRO_EVENT_TIMER)
 			{
 				update_nave(&nave);
-				update_all_aliens(ROW_ALIEN, COLUMN_ALIEN, alien);
+				update_all_aliens(ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien);
 				update_shots(&shots);
-				shot_hit(&shots, ROW_ALIEN, COLUMN_ALIEN, alien, &pontuacao);
+				shot_hit(&shots, ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, &pontuacao);
 
 				draw_scenario();
 				draw_nave(nave);
-				playing = drawAllAliens(ROW_ALIEN, COLUMN_ALIEN, alien);
+				playing = drawAllAliens(ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien);
 				draw_shots(&shots);
 
 				sprintf(text, "Score: %d", pontuacao);
 				al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W - 150, 10, 0, text);
+
+				sprintf(text, "Fase: %d", phase+1);
+				al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W/2 - 60, 10, 0, text);
 
 				sprintf(text, "Record: %d", recorde);
 				al_draw_text(font, al_map_rgb(255, 255, 255), 10, 10, 0, text);
@@ -64,11 +73,11 @@ int main(int argc, char **argv)
 				// desenha nave em cima do cenario (dps)
 				if (playing)
 				{
-					playing = !colisao_all_alien_solo(playing, ROW_ALIEN, COLUMN_ALIEN, alien, &pontuacao);
+					playing = !colisao_all_alien_solo(playing, ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, &pontuacao);
 				}
 				if (playing)
 				{
-					playing = colisao_all_alien_nave(ROW_ALIEN, COLUMN_ALIEN, alien, nave, &pontuacao);
+					playing = colisao_all_alien_nave(ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, nave, &pontuacao);
 				}
 
 				al_flip_display();

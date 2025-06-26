@@ -2,8 +2,8 @@
 
 
 
-const int SCREEN_W = 800;
-const int SCREEN_H = 600;
+const int SCREEN_W = 1600;
+const int SCREEN_H = 800;
 const int GRASS_H = 60;
 const float FPS = 100;
 
@@ -13,9 +13,9 @@ const int SHIP_SPEED = 6;
 
 const int ALIEN_W = 30;
 const int ALIEN_H = 30;
-const int ROW_ALIEN = 4;
-const int COLUMN_ALIEN = 5;
-const int ALIEN_X_SPEED = 2;
+const int ROW_ALIEN[PHASES_NUMBER] = {4, 5,5,6,6,6};
+const int COLUMN_ALIEN[PHASES_NUMBER] = {6,7,8,9,10,11};
+const int ALIEN_X_SPEED[PHASES_NUMBER] = {2,3,4,5,6,7};
 const int ALIEN_SPACEMENT = 30;
 
 const int SHOT_SPEED = 8;
