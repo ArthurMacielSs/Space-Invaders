@@ -13,23 +13,20 @@ int main(int argc, char **argv)
 	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
 	ALLEGRO_TIMER *timer = NULL;
 	ALLEGRO_FONT *font = NULL;
+	ALLEGRO_FONT *bigFont = NULL;
+	
 
 	FILE *arq;
 
-	
-	
-
-	// rever pq endereço
-	if (initialize_Allegro(&display, &event_queue, &timer, &font) != 0)
+	if (initialize_Allegro(&display, &event_queue, &timer, &font, &bigFont) != 0)
 	{
-		// Handle error
 		return -1;
 	}
 
 	
 
 	char text[50];
-	int playing = 1;
+	int playing = 1, waitingToStart, waitingToEnd;
 	int pontuacao = 0, recorde, phase=0, result;
 
 	if (pega_recorde(&arq, &recorde))
@@ -48,10 +45,21 @@ int main(int argc, char **argv)
 		initNave(&nave);
 		initAllAliens(ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, phase);
 
+		show_start_screen(&font, &bigFont);
+
+		ALLEGRO_EVENT ev;
+		waitingToStart = 1;
+		while (waitingToStart) {
+			al_wait_for_event(event_queue, &ev);
+			if (ev.type == ALLEGRO_EVENT_KEY_DOWN || ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+				waitingToStart = 0;
+			}
+		}
+
+		
 		while (playing)
 		{
-
-			ALLEGRO_EVENT ev;
+			
 			al_wait_for_event(event_queue, &ev);
 			if (ev.type == ALLEGRO_EVENT_TIMER)
 			{
@@ -82,11 +90,18 @@ int main(int argc, char **argv)
 						}
 					}
 				else if(result==0){
+					show_end_screen(&font, &bigFont,pontuacao, recorde);
+
+					    waitingToEnd = 1;
+						while (waitingToEnd) {
+							al_wait_for_event(event_queue, &ev);
+							if (ev.type == ALLEGRO_EVENT_KEY_DOWN || ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN || ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+								waitingToEnd = 0;
+							}
+						}
 					playing=0;
 				}
 				
-
-					
 				
 				sprintf(text, "Score: %d", pontuacao);
 				al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W - 150, 10, 0, text);
@@ -97,9 +112,7 @@ int main(int argc, char **argv)
 				sprintf(text, "Record: %d", recorde);
 				al_draw_text(font, al_map_rgb(255, 255, 255), 10, 10, 0, text);
 
-				// printf("\n %d playing" ,playing);
-
-				// desenha nave em cima do cenario (dps)
+		
 				if (playing)
 				{
 					playing = !colisao_all_alien_solo(playing, ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, &pontuacao);

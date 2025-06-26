@@ -55,7 +55,9 @@ struct Shot
 // allegroFunctions
 int initialize_Allegro(ALLEGRO_DISPLAY **display,
 					   ALLEGRO_EVENT_QUEUE **event_queue,
-					   ALLEGRO_TIMER **timer, ALLEGRO_FONT **fonte);
+					   ALLEGRO_TIMER **timer, ALLEGRO_FONT **fonte,ALLEGRO_FONT **bigFonte );
+void show_start_screen(ALLEGRO_FONT **font,ALLEGRO_FONT **big_font );
+void show_end_screen(ALLEGRO_FONT **font, ALLEGRO_FONT **big_font,int pontuacao, int recorde);
 
 
 // criatingInvadersElements

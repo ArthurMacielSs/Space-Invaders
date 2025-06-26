@@ -7,7 +7,7 @@
 
 int initialize_Allegro(ALLEGRO_DISPLAY **display,
                        ALLEGRO_EVENT_QUEUE **event_queue,
-                       ALLEGRO_TIMER **timer, ALLEGRO_FONT **fonte)
+                       ALLEGRO_TIMER **timer, ALLEGRO_FONT **font, ALLEGRO_FONT **bigFont)
 {
     if (!al_init())
     {
@@ -31,12 +31,21 @@ int initialize_Allegro(ALLEGRO_DISPLAY **display,
         return -1;
     }
 
-    *fonte = al_load_ttf_font("OpenSans_Condensed-Bold.ttf", 24, 0);
-    if (!*fonte)
+    *font = al_load_ttf_font("VT323-Regular.ttf", 24, 0);
+    if (!*font)
     {
         fprintf(stderr, "Failed to load font.\n");
         return -1;
     }
+
+     *bigFont = al_load_ttf_font("VT323-Regular.ttf", 80, 0);
+    if (!*font)
+    {
+        fprintf(stderr, "Failed to load font.\n");
+        return -1;
+    }
+
+
 
     // Initialize primitives addon
     if (!al_init_primitives_addon())
@@ -78,4 +87,33 @@ int initialize_Allegro(ALLEGRO_DISPLAY **display,
     al_start_timer(*timer);
 
     return 0;
+}
+
+void show_start_screen(ALLEGRO_FONT **font,ALLEGRO_FONT **big_font )
+{
+    al_clear_to_color(al_map_rgb(0, 0, 0));
+    al_draw_text(*big_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, 60, ALLEGRO_ALIGN_CENTER, "SPACE INVADERS");
+    al_draw_text(*font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + 20, ALLEGRO_ALIGN_CENTER, "Click or press any key to start");
+    al_flip_display();
+}
+
+
+void show_end_screen(ALLEGRO_FONT **font, ALLEGRO_FONT **big_font,int pontuacao, int recorde) {
+	al_clear_to_color(al_map_rgb(0, 0, 0));
+
+    al_draw_text(*big_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, 60, ALLEGRO_ALIGN_CENTER, "Game Over!");
+	
+	char text[100];
+	sprintf(text, " Pontuacao: %d", pontuacao);
+	al_draw_text(*font, al_map_rgb(255, 255, 255),  SCREEN_W / 2, SCREEN_H / 2 - 30, ALLEGRO_ALIGN_CENTER, text);
+
+    if(pontuacao>recorde){
+        recorde=pontuacao;
+    }
+	sprintf(text, "Recorde: %d", recorde);
+	al_draw_text(*font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + 10, ALLEGRO_ALIGN_CENTER, text);
+
+	al_draw_text(*font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H - 60, ALLEGRO_ALIGN_CENTER, "Aperte qualquer tecla para fechar...");
+
+	al_flip_display();
 }

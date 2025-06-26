@@ -18,4 +18,4 @@ const int COLUMN_ALIEN[PHASES_NUMBER] = {6,7,8,9,10,11};
 const int ALIEN_X_SPEED[PHASES_NUMBER] = {2,3,4,5,6,7};
 const int ALIEN_SPACEMENT = 30;
 
-const int SHOT_SPEED = 8;
+const int SHOT_SPEED = 8*5;
