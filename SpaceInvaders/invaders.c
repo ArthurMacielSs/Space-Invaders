@@ -29,10 +29,13 @@ int main(int argc, char **argv)
 	init_shots(&shots);
 	initNave(&nave);
 	initAllAliens(ROW_ALIEN, COLUMN_ALIEN,alien);
-
+	
+	char text[50]; 
 	int playing = 1;
+	int pontuacao=0;
 	while (playing)
 	{
+		
 		ALLEGRO_EVENT ev;
 		al_wait_for_event(event_queue, &ev);
 		if (ev.type == ALLEGRO_EVENT_TIMER)
@@ -40,15 +43,20 @@ int main(int argc, char **argv)
 			update_nave(&nave);
 			update_all_aliens(ROW_ALIEN,COLUMN_ALIEN,alien);
 			update_shots(&shots);
-			shot_hit(&shots,ROW_ALIEN,COLUMN_ALIEN,alien);
+			shot_hit(&shots,ROW_ALIEN,COLUMN_ALIEN,alien,&pontuacao);
 
 
 			draw_scenario();
 			draw_nave(nave);
 			playing=drawAllAliens(ROW_ALIEN,COLUMN_ALIEN,alien);
 			draw_shots(&shots);
-			al_draw_text(font, al_map_rgb(255, 255, 255), 10, 10, 0, "Score: 100");
-			al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W-100, 10, 0, "record: 100");
+			
+			 
+			sprintf(text, "Score: %d", pontuacao);
+			al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W - 150, 10, 0, text);
+			
+			al_draw_text(font, al_map_rgb(255, 255, 255), 10, 10, 0, ": 100");
+			
 
 			//printf("\n %d playing" ,playing);
 			
@@ -60,11 +68,11 @@ int main(int argc, char **argv)
 
 			
 			if(playing){
-			playing = !colisao_all_alien_solo(playing,ROW_ALIEN, COLUMN_ALIEN,alien);
+			playing = !colisao_all_alien_solo(playing,ROW_ALIEN, COLUMN_ALIEN,alien, &pontuacao);
 			
 			}
 			if(playing){
-				playing= colisao_all_alien_nave(ROW_ALIEN, COLUMN_ALIEN, alien, nave);
+				playing= colisao_all_alien_nave(ROW_ALIEN, COLUMN_ALIEN, alien, nave, &pontuacao);
 				
 			}
 
@@ -117,7 +125,6 @@ int main(int argc, char **argv)
 				break;
 
 			case ALLEGRO_KEY_SPACE:
-				printf("\n espaco solto");
 				break;
 
 			default:

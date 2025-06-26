@@ -58,12 +58,13 @@ int colisao_alien_solo(Alien alien){
 	}
 }
 
-int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco [linha][coluna] ){
+int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco [linha][coluna], int *pontuacao ){
 	playng=0;
 	for(int i=0; i<linha; i++){
 		for(int j=0; j<coluna; j++){
 			playng =colisao_alien_solo(bloco[i][j]);
 			if(playng==1){
+				*pontuacao -=500;
 				break;
 				return playng;
 			}
@@ -72,22 +73,24 @@ int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco [linha
 	}
 	return playng;
 }
-int colisao_alien_nave(Alien alien, Nave nave){
+int colisao_alien_nave(Alien alien, Nave nave, int *pontuacao){
 	if((alien.y+ALIEN_H>=nave.y)&&(((alien.x>=nave.x-NAVE_W/2)&&(alien.x<=nave.x+NAVE_W/2))||((alien.x+ALIEN_W>=nave.x-NAVE_W/2)&&(alien.x+ALIEN_W<=nave.x+NAVE_W/2)))){
 		printf("\ncolidiu");
+		*pontuacao -= 500;
 		return 0;
 	}
 	else{
 		return 1;
 	}
+	
 
 }
 
-int colisao_all_alien_nave(int linha, int coluna, Alien bloco[linha][coluna], Nave nave){
+int colisao_all_alien_nave(int linha, int coluna, Alien bloco[linha][coluna], Nave nave, int *pontuacao){
 	int playing=1;
 	for(int i=0; i<linha; i++){
 		for(int j=0; j<coluna; j++){
-			playing=colisao_alien_nave(bloco[i][j], nave);
+			playing=colisao_alien_nave(bloco[i][j], nave, pontuacao);
 			if(playing==0){
 				return playing;
 				break;
@@ -111,7 +114,7 @@ void update_shots(struct Shot *shots) {
     }
 
 
-void shot_hit(struct Shot *shot, int linha, int coluna, Alien bloco [linha][coluna]){
+void shot_hit(struct Shot *shot, int linha, int coluna, Alien bloco [linha][coluna], int *pontuacao){
 	if(shot->active){
 	for(int i=0; i<linha; i++){
 		for(int j=0; j<coluna; j++){
@@ -119,6 +122,7 @@ void shot_hit(struct Shot *shot, int linha, int coluna, Alien bloco [linha][colu
 			if(((shot->y>=bloco[i][j].y)&& (shot->y<=bloco[i][j].y+ALIEN_H))&&((shot->x+2>=bloco[i][j].x)&&(shot->x+2<=bloco[i][j].x+ALIEN_W))){
 			shot->active=0;
 			bloco[i][j].is_active=0;
+			*pontuacao+=100;
 			printf("\n %d",bloco[i][j].is_active);
 		}
 		
