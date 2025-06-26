@@ -1,6 +1,7 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+#include <stdio.h>
 
 //constantes
 extern const int SCREEN_W;
@@ -78,3 +79,9 @@ void update_shots(struct Shot *shots);
 void shot_hit(struct Shot *shot, int linha, int coluna, Alien bloco [linha][coluna], int *pontuacao);
 int colisao_alien_nave(Alien alien, Nave nave, int *pontuacao);
 int colisao_all_alien_nave(int linha, int coluna, Alien bloco[linha][coluna], Nave nave, int *pontuacao);
+
+
+
+//fileFunctions
+int pega_recorde(FILE **arq, int *recorde);
+int adiciona_recorde(FILE **arq, int *recorde, int *pontuacao);

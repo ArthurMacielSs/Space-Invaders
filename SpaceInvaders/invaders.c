@@ -14,6 +14,9 @@ int main(int argc, char **argv)
 	ALLEGRO_TIMER *timer = NULL;
 	ALLEGRO_FONT *font = NULL;
 
+	FILE *arq;
+	
+
 	struct Shot shots;
 	Nave nave;
 	Alien alien[ROW_ALIEN][COLUMN_ALIEN];
@@ -29,10 +32,12 @@ int main(int argc, char **argv)
 	init_shots(&shots);
 	initNave(&nave);
 	initAllAliens(ROW_ALIEN, COLUMN_ALIEN,alien);
-	
+
 	char text[50]; 
 	int playing = 1;
-	int pontuacao=0;
+	int pontuacao=0, recorde;
+
+	if(pega_recorde(&arq,&recorde)){
 	while (playing)
 	{
 		
@@ -54,19 +59,14 @@ int main(int argc, char **argv)
 			 
 			sprintf(text, "Score: %d", pontuacao);
 			al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W - 150, 10, 0, text);
-			
-			al_draw_text(font, al_map_rgb(255, 255, 255), 10, 10, 0, ": 100");
+
+			sprintf(text, "Record: %d", recorde);
+			al_draw_text(font, al_map_rgb(255, 255, 255), 10, 10, 0, text);
 			
 
 			//printf("\n %d playing" ,playing);
-			
-			
-			
-			
 
 			// desenha nave em cima do cenario (dps)
-
-			
 			if(playing){
 			playing = !colisao_all_alien_solo(playing,ROW_ALIEN, COLUMN_ALIEN,alien, &pontuacao);
 			
@@ -134,12 +134,30 @@ int main(int argc, char **argv)
 	
 	}
 
-	return 0;
+	
 
 	// fila de eventos
 	// qualquer evento entra nela e começa do final
 	// pode mandar quantos eventos quiser mas todos ficam no final da fila
 	// o programa é um loop que verifica a fila de eventos e faz ela
+
+	}
+	else{ 
+		printf("\n código encerrado");
+		return -1;
+	}
+	if(adiciona_recorde(&arq, &recorde, &pontuacao)){
+		printf("\nparabéns, recorde atualizado");
+		return 0;
+	}
+	else{
+		printf("\nfalha ao atualizar o recorde");
+		return -1;
+
+	}
+
+
+	return 0;
 }
 
 
