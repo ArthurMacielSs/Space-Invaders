@@ -3,7 +3,7 @@
 #include <allegro5/allegro_ttf.h>
 #include <stdio.h>
 
-//constantes
+// constantes
 extern const int SCREEN_W;
 extern const int SCREEN_H;
 extern const int GRASS_H;
@@ -23,9 +23,7 @@ extern const int ALIEN_SPACEMENT;
 
 const int SHOT_SPEED;
 
-
-
-//estruturas
+// estruturas
 typedef struct Nave
 {
 	float x, y;
@@ -35,53 +33,50 @@ typedef struct Nave
 
 } Nave;
 
-typedef struct Alien {
+typedef struct Alien
+{
 	float x, y;
 	float x_vel, y_vel;
 	ALLEGRO_COLOR cor;
 	int is_active;
 } Alien;
 
- struct Shot {
-    float x, y;
-    float speed;
-    int active;
+struct Shot
+{
+	float x, y;
+	float speed;
+	int active;
 };
 
+// allegroFunctions
+int initialize_Allegro(ALLEGRO_DISPLAY **display,
+					   ALLEGRO_EVENT_QUEUE **event_queue,
+					   ALLEGRO_TIMER **timer, ALLEGRO_FONT **fonte);
 
-//allegroFunctions
-int initialize_Allegro(ALLEGRO_DISPLAY **display, 
-                      ALLEGRO_EVENT_QUEUE **event_queue, 
-                      ALLEGRO_TIMER **timer, ALLEGRO_FONT **fonte);
-
-
-//criatingInvadersElements
+// criatingInvadersElements
 void initNave(Nave *nave);
-void initAlien (Alien *alien, int x, int y);
+void initAlien(Alien *alien, int x, int y);
 void draw_alien(Alien alien);
 void draw_scenario();
 void draw_nave(Nave nave);
-void initAllAliens (int linha, int coluna,Alien bloco[linha][coluna]);
-int drawAllAliens (int linha, int coluna, Alien bloco[linha][coluna]);
+void initAllAliens(int linha, int coluna, Alien bloco[linha][coluna]);
+int drawAllAliens(int linha, int coluna, Alien bloco[linha][coluna]);
 
 void init_shots(struct Shot *shots);
-void fire_shot(struct Shot *shots,float ship_x, float ship_y);
+void fire_shot(struct Shot *shots, float ship_x, float ship_y);
 void draw_shots(struct Shot *shots);
 
-
-//updatingInvadersElements
+// updatingInvadersElements
 void update_nave(Nave *nave);
-//void update_alien (Alien *alien);
+// void update_alien (Alien *alien);
 int colisao_alien_solo(Alien alien);
-void update_all_aliens (int linha, int coluna, Alien bloco [linha][coluna]);
-int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco [linha][coluna], int *pontuacao);
+void update_all_aliens(int linha, int coluna, Alien bloco[linha][coluna]);
+int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco[linha][coluna], int *pontuacao);
 void update_shots(struct Shot *shots);
-void shot_hit(struct Shot *shot, int linha, int coluna, Alien bloco [linha][coluna], int *pontuacao);
+void shot_hit(struct Shot *shot, int linha, int coluna, Alien bloco[linha][coluna], int *pontuacao);
 int colisao_alien_nave(Alien alien, Nave nave, int *pontuacao);
 int colisao_all_alien_nave(int linha, int coluna, Alien bloco[linha][coluna], Nave nave, int *pontuacao);
 
-
-
-//fileFunctions
+// fileFunctions
 int pega_recorde(FILE **arq, int *recorde);
 int adiciona_recorde(FILE **arq, int *recorde, int *pontuacao);

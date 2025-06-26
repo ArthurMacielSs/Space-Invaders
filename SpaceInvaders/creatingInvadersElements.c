@@ -3,55 +3,58 @@
 #include <allegro5/allegro_primitives.h>
 #include "invaders.h"
 
-
-
 void initNave(Nave *nave)
 {
 	nave->x = SCREEN_W / 2;
-	nave->y=SCREEN_H-GRASS_H/2-NAVE_H;
+	nave->y = SCREEN_H - GRASS_H / 2 - NAVE_H;
 	nave->vel = SHIP_SPEED;
 	nave->dir = 0;
 	nave->esq = 0;
 	nave->cor = al_map_rgb(0, 0, 255);
 }
 
-void initAlien (Alien *alien, int x, int y){
-	alien->x=x;
-	alien->y=y;
-	alien->x_vel=ALIEN_X_SPEED;
-	alien->y_vel= ALIEN_H;
-	alien->cor=al_map_rgb(rand()%256,rand()%256,rand()%256);
-	alien->is_active=1;
+void initAlien(Alien *alien, int x, int y)
+{
+	alien->x = x;
+	alien->y = y;
+	alien->x_vel = ALIEN_X_SPEED;
+	alien->y_vel = ALIEN_H;
+	alien->cor = al_map_rgb(rand() % 256, rand() % 256, rand() % 256);
+	alien->is_active = 1;
 }
 
-void initAllAliens (int linha, int coluna,Alien bloco[linha][coluna]){
-	int x=0, y=0;
-	for(int i=0; i<linha; i++){
-		for(int j=0; j<coluna; j++){
-			initAlien(&bloco[i][j],x, y);
+void initAllAliens(int linha, int coluna, Alien bloco[linha][coluna])
+{
+	int x = 0, y = 0;
+	for (int i = 0; i < linha; i++)
+	{
+		for (int j = 0; j < coluna; j++)
+		{
+			initAlien(&bloco[i][j], x, y);
 			x = x + ALIEN_W + ALIEN_SPACEMENT;
-			
 		}
-		x=0;
+		x = 0;
 		y = y + ALIEN_H + ALIEN_SPACEMENT;
 	}
-
 }
 
-
-void draw_alien(Alien alien){
-	al_draw_filled_rectangle(alien.x, alien.y, alien.x+ALIEN_W, alien.y + ALIEN_H, alien.cor);
+void draw_alien(Alien alien)
+{
+	al_draw_filled_rectangle(alien.x, alien.y, alien.x + ALIEN_W, alien.y + ALIEN_H, alien.cor);
 }
 
-int drawAllAliens (int linha, int coluna, Alien bloco[linha][coluna]){
-	int verifica=0;
-	for(int i=0; i<linha; i++){
-		for(int j=0; j<coluna; j++){
-			if(bloco[i][j].is_active){
-			draw_alien(bloco[i][j]);
-			verifica=1;
+int drawAllAliens(int linha, int coluna, Alien bloco[linha][coluna])
+{
+	int verifica = 0;
+	for (int i = 0; i < linha; i++)
+	{
+		for (int j = 0; j < coluna; j++)
+		{
+			if (bloco[i][j].is_active)
+			{
+				draw_alien(bloco[i][j]);
+				verifica = 1;
 			}
-			
 		}
 	}
 	return verifica;
@@ -70,22 +73,26 @@ void draw_nave(Nave nave)
 	al_draw_filled_triangle(nave.x, y_base - NAVE_H, nave.x - NAVE_W / 2, y_base, nave.x + NAVE_W / 2, y_base, nave.cor);
 }
 
-void init_shots(struct Shot *shots) {
-        shots->active = 0;
+void init_shots(struct Shot *shots)
+{
+	shots->active = 0;
 }
 
-void fire_shot(struct Shot *shots,float ship_x, float ship_y) {
-        if (!shots->active) {
-            shots->x = ship_x;
-            shots->y = ship_y;
-            shots->speed = -SHOT_SPEED;  // negative because it goes up
-            shots->active = 1;
-    }
+void fire_shot(struct Shot *shots, float ship_x, float ship_y)
+{
+	if (!shots->active)
+	{
+		shots->x = ship_x;
+		shots->y = ship_y;
+		shots->speed = -SHOT_SPEED; // negative because it goes up
+		shots->active = 1;
+	}
 }
 
-void draw_shots(struct Shot *shots) {
-        if (shots->active) {
-            al_draw_filled_rectangle(shots->x - 2, shots->y, shots->x + 2, shots->y + 10, al_map_rgb(255, 255, 0));
-        }
-    }
-
+void draw_shots(struct Shot *shots)
+{
+	if (shots->active)
+	{
+		al_draw_filled_rectangle(shots->x - 2, shots->y, shots->x + 2, shots->y + 10, al_map_rgb(255, 255, 0));
+	}
+}
