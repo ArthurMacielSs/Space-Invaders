@@ -67,9 +67,6 @@ void draw_nave(Nave nave);
 void initAllAliens(int linha, int coluna, Alien **bloco, int phase);
 int drawAllAliens(int linha, int coluna, Alien **bloco, int *phase);
 
-int alloca_alien(int rows, int cols, Alien ***alien);
-int free_alien(int rows, Alien ***alien);
-
 void init_shots(struct Shot *shots);
 void fire_shot(struct Shot *shots, float ship_x, float ship_y);
 void draw_shots(struct Shot *shots);
@@ -89,3 +86,8 @@ int colisao_all_alien_nave(int linha, int coluna, Alien **bloco, Nave nave, int 
 // fileFunctions
 int pega_recorde(FILE **arq, int *recorde);
 int adiciona_recorde(FILE **arq, int *recorde, int *pontuacao);
+
+
+//allocationFunctions
+int alloca_alien(int rows, int cols, Alien ***alien);
+int free_alien(int rows, Alien ***alien);
