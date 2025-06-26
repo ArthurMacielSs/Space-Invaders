@@ -56,6 +56,7 @@ void update_all_aliens(int linha, int coluna, Alien bloco[linha][coluna]) {
     }
 }
 int colisao_alien_solo(Alien alien){
+	if(alien.is_active==1){
 	if(alien.y + ALIEN_H>=SCREEN_H-GRASS_H){
 		printf("\n morreu por grama");
 		return 1;
@@ -63,6 +64,8 @@ int colisao_alien_solo(Alien alien){
 	else{
 		return 0;
 	}
+}
+
 	
 }
 
@@ -77,9 +80,11 @@ int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco [linha
 				*pontuacao -=500;
 				break;
 				return playng;
-			}
-
+			}	
 		}
+		if(playng==1){
+				break;
+			}
 	}
 	return playng;
 }
