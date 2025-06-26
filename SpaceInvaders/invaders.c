@@ -3,6 +3,7 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+#include <stdlib.h>
 #include "invaders.h"
 
 int main(int argc, char **argv)
@@ -29,12 +30,17 @@ int main(int argc, char **argv)
 
 	char text[50];
 	int playing = 1;
-	int pontuacao = 0, recorde, phase=0;
+	int pontuacao = 0, recorde, phase=0, result;
 
 	if (pega_recorde(&arq, &recorde))
 	{  
 		
-		Alien alien[ROW_ALIEN[phase]][COLUMN_ALIEN[phase]];
+		Alien **alien;
+		if(!alloca_alien(ROW_ALIEN[phase],COLUMN_ALIEN[phase],&alien)){
+			printf("Falha na alocação de memória!\n");
+			return -1;
+		}	
+    
 		struct Shot shots;
 		Nave nave;
 
@@ -56,9 +62,32 @@ int main(int argc, char **argv)
 
 				draw_scenario();
 				draw_nave(nave);
-				playing = drawAllAliens(ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien);
 				draw_shots(&shots);
 
+				
+				 result = drawAllAliens(ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, &phase);
+				
+				
+				if (result==2){
+						if(free_alien(ROW_ALIEN[phase],&alien)){
+						phase++;
+
+						if(!alloca_alien(ROW_ALIEN[phase],COLUMN_ALIEN[phase],&alien)){
+							printf("Falha na alocação de memória!\n");
+							return -1;
+						}	
+						initAllAliens(ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, phase);
+						init_shots(&shots);
+						playing=1;
+						}
+					}
+				else if(result==0){
+					playing=0;
+				}
+				
+
+					
+				
 				sprintf(text, "Score: %d", pontuacao);
 				al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W - 150, 10, 0, text);
 
@@ -149,7 +178,7 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-		printf("\recorde não atualizado, o recorde do jogo ainda eh %d pontos", recorde);
+		printf("\n recorde não atualizado, o recorde do jogo ainda eh %d pontos", recorde);
 		return -1;
 	}
 

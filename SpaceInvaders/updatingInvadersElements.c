@@ -24,7 +24,7 @@ void update_nave(Nave *nave)
 }*/
 
 // certificar que entendi
-void update_all_aliens(int linha, int coluna, Alien bloco[linha][coluna])
+void update_all_aliens(int linha, int coluna, Alien **bloco)
 {
 	int should_reverse = 0;
 	for (int i = 0; i < linha; i++)
@@ -80,7 +80,7 @@ int colisao_alien_solo(Alien alien)
 	}
 }
 
-int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco[linha][coluna], int *pontuacao)
+int colisao_all_alien_solo(int playng, int linha, int coluna, Alien **bloco, int *pontuacao)
 {
 	playng = 0;
 	for (int i = 0; i < linha; i++)
@@ -119,7 +119,7 @@ int colisao_alien_nave(Alien alien, Nave nave, int *pontuacao)
 	return 1;
 }
 
-int colisao_all_alien_nave(int linha, int coluna, Alien bloco[linha][coluna], Nave nave, int *pontuacao)
+int colisao_all_alien_nave(int linha, int coluna, Alien **bloco, Nave nave, int *pontuacao)
 {
 	int playing = 1;
 	for (int i = 0; i < linha; i++)
@@ -154,7 +154,7 @@ void update_shots(struct Shot *shots)
 	}
 }
 
-void shot_hit(struct Shot *shot, int linha, int coluna, Alien bloco[linha][coluna], int *pontuacao)
+void shot_hit(struct Shot *shot, int linha, int coluna, Alien **bloco, int *pontuacao)
 {
 	if (shot->active)
 	{

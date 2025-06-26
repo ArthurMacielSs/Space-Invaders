@@ -23,7 +23,7 @@ void initAlien(Alien *alien, int x, int y, int phase)
 	alien->is_active = 1;
 }
 
-void initAllAliens(int linha, int coluna, Alien bloco[linha][coluna], int phase)
+void initAllAliens(int linha, int coluna, Alien **bloco, int phase)
 {
 	int x = 0, y = 0;
 	for (int i = 0; i < linha; i++)
@@ -43,8 +43,9 @@ void draw_alien(Alien alien)
 	al_draw_filled_rectangle(alien.x, alien.y, alien.x + ALIEN_W, alien.y + ALIEN_H, alien.cor);
 }
 
-int drawAllAliens(int linha, int coluna, Alien bloco[linha][coluna])
+int drawAllAliens(int linha, int coluna, Alien **bloco, int *phase)
 {
+	int active = 0;
 	int verifica = 0;
 	for (int i = 0; i < linha; i++)
 	{
@@ -54,10 +55,22 @@ int drawAllAliens(int linha, int coluna, Alien bloco[linha][coluna])
 			{
 				draw_alien(bloco[i][j]);
 				verifica = 1;
+				active = 1;
 			}
 		}
 	}
-	return verifica;
+	if (active)
+	{
+		return verifica;
+	}
+	else if (*phase < PHASES_NUMBER - 1)
+	{
+		return 2;
+	}
+	else
+	{
+		return verifica;
+	}
 }
 
 void draw_scenario()
@@ -96,3 +109,49 @@ void draw_shots(struct Shot *shots)
 		al_draw_filled_rectangle(shots->x - 2, shots->y, shots->x + 2, shots->y + 10, al_map_rgb(255, 255, 0));
 	}
 }
+
+int alloca_alien(int rows, int cols, Alien ***alien)
+{
+	*alien = (Alien **)malloc(rows * sizeof(Alien *));
+	if (*alien == NULL)
+	{
+		return 0;
+	}
+
+	for (int i = 0; i < rows; i++)
+	{
+		(*alien)[i] = (Alien *)malloc(cols * sizeof(Alien));
+
+		if ((*alien)[i] == NULL)
+		{
+			for (int j = 0; j < i; j++)
+			{
+				free((*alien)[j]);
+			}
+			free(*alien);
+			*alien = NULL;
+			return 0; 
+		}
+	}
+
+	return 1;
+}
+
+int free_alien(int rows, Alien ***alien)
+{
+	    if (*alien == NULL)
+    {
+        return 1; 
+    }
+
+    for (int i = 0; i < rows; i++)
+    {
+        free((*alien)[i]); 
+    }
+
+    free(*alien);          
+    *alien = NULL;         
+    return 1;
+}
+	
+

@@ -57,29 +57,34 @@ int initialize_Allegro(ALLEGRO_DISPLAY **display,
 					   ALLEGRO_EVENT_QUEUE **event_queue,
 					   ALLEGRO_TIMER **timer, ALLEGRO_FONT **fonte);
 
+
 // criatingInvadersElements
 void initNave(Nave *nave);
 void initAlien(Alien *alien, int x, int y, int phase);
 void draw_alien(Alien alien);
 void draw_scenario();
 void draw_nave(Nave nave);
-void initAllAliens(int linha, int coluna, Alien bloco[linha][coluna], int phase);
-int drawAllAliens(int linha, int coluna, Alien bloco[linha][coluna]);
+void initAllAliens(int linha, int coluna, Alien **bloco, int phase);
+int drawAllAliens(int linha, int coluna, Alien **bloco, int *phase);
+
+int alloca_alien(int rows, int cols, Alien ***alien);
+int free_alien(int rows, Alien ***alien);
 
 void init_shots(struct Shot *shots);
 void fire_shot(struct Shot *shots, float ship_x, float ship_y);
 void draw_shots(struct Shot *shots);
 
+
 // updatingInvadersElements
 void update_nave(Nave *nave);
 // void update_alien (Alien *alien);
 int colisao_alien_solo(Alien alien);
-void update_all_aliens(int linha, int coluna, Alien bloco[linha][coluna]);
-int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco[linha][coluna], int *pontuacao);
+void update_all_aliens(int linha, int coluna, Alien **bloco);
+int colisao_all_alien_solo(int playng, int linha, int coluna, Alien **bloco, int *pontuacao);
 void update_shots(struct Shot *shots);
-void shot_hit(struct Shot *shot, int linha, int coluna, Alien bloco[linha][coluna], int *pontuacao);
+void shot_hit(struct Shot *shot, int linha, int coluna, Alien **bloco, int *pontuacao);
 int colisao_alien_nave(Alien alien, Nave nave, int *pontuacao);
-int colisao_all_alien_nave(int linha, int coluna, Alien bloco[linha][coluna], Nave nave, int *pontuacao);
+int colisao_all_alien_nave(int linha, int coluna, Alien **bloco, Nave nave, int *pontuacao);
 
 // fileFunctions
 int pega_recorde(FILE **arq, int *recorde);
