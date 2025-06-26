@@ -24,21 +24,27 @@ void update_nave(Nave *nave)
 	alien->x += alien->x_vel;
 }*/
 
+//certificar que entendi 
 void update_all_aliens(int linha, int coluna, Alien bloco[linha][coluna]) {
     int should_reverse = 0;
     for (int i = 0; i < linha; i++) {
         for (int j = 0; j < coluna; j++) {
             Alien *teste = &bloco[i][j];
+			//pq usa teste->is_active ao inves de *teste->is_active
+			if(teste->is_active==1){
             if ((teste->x + ALIEN_W + teste->x_vel > SCREEN_W) || (teste->x + teste->x_vel < 0)) {
                 should_reverse = 1;
                 break;
             }
+		}
         }
         if (should_reverse) break;
     }
 
     for (int i = 0; i < linha; i++) {
         for (int j = 0; j < coluna; j++) {
+			//pq usa &
+			if(&bloco[i][j]){
             Alien *teste = &bloco[i][j];
             if (should_reverse) {
                 teste->y += teste->y_vel;
@@ -46,6 +52,7 @@ void update_all_aliens(int linha, int coluna, Alien bloco[linha][coluna]) {
             }
             teste->x += teste->x_vel;
         }
+	}
     }
 }
 int colisao_alien_solo(Alien alien){
@@ -56,7 +63,10 @@ int colisao_alien_solo(Alien alien){
 	else{
 		return 0;
 	}
+	
 }
+
+
 
 int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco [linha][coluna], int *pontuacao ){
 	playng=0;
@@ -74,6 +84,7 @@ int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco [linha
 	return playng;
 }
 int colisao_alien_nave(Alien alien, Nave nave, int *pontuacao){
+	if(alien.is_active==1){
 	if((alien.y+ALIEN_H>=nave.y)&&(((alien.x>=nave.x-NAVE_W/2)&&(alien.x<=nave.x+NAVE_W/2))||((alien.x+ALIEN_W>=nave.x-NAVE_W/2)&&(alien.x+ALIEN_W<=nave.x+NAVE_W/2)))){
 		printf("\ncolidiu");
 		*pontuacao -= 500;
@@ -82,7 +93,9 @@ int colisao_alien_nave(Alien alien, Nave nave, int *pontuacao){
 	else{
 		return 1;
 	}
-	
+}
+//ver pq pus esse return1
+return 1;
 
 }
 
