@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 #include "invaders.h"
 
 
@@ -10,19 +12,22 @@ int main(int argc, char **argv)
 	ALLEGRO_DISPLAY *display = NULL;
 	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
 	ALLEGRO_TIMER *timer = NULL;
+	ALLEGRO_FONT *font = NULL;
+
+	struct Shot shots;
+	Nave nave;
+	Alien alien[ROW_ALIEN][COLUMN_ALIEN];
+
+	
 
 	//rever pq endereço
-	if (initialize_Allegro(&display, &event_queue, &timer) != 0) {
+	if (initialize_Allegro(&display, &event_queue, &timer, &font) != 0) {
     // Handle error
     return -1;
 }
-	struct Shot shots;
+
 	init_shots(&shots);
-
-	Nave nave;
 	initNave(&nave);
-
-	Alien alien[ROW_ALIEN][COLUMN_ALIEN];
 	initAllAliens(ROW_ALIEN, COLUMN_ALIEN,alien);
 
 	int playing = 1;
@@ -42,6 +47,8 @@ int main(int argc, char **argv)
 			draw_nave(nave);
 			playing=drawAllAliens(ROW_ALIEN,COLUMN_ALIEN,alien);
 			draw_shots(&shots);
+			al_draw_text(font, al_map_rgb(255, 255, 255), 10, 10, 0, "Score: 100");
+			al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W-100, 10, 0, "record: 100");
 
 			//printf("\n %d playing" ,playing);
 			

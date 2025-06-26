@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 #include "invaders.h"
 
 int initialize_Allegro(ALLEGRO_DISPLAY **display, 
                       ALLEGRO_EVENT_QUEUE **event_queue, 
-                      ALLEGRO_TIMER **timer)
+                      ALLEGRO_TIMER **timer, ALLEGRO_FONT **fonte)
 {
     if (!al_init())
     {
@@ -20,6 +22,20 @@ int initialize_Allegro(ALLEGRO_DISPLAY **display,
         return -1;
     }
 
+    //funções necessárias para escrever
+    	al_init_font_addon();
+
+    	if(!al_init_ttf_addon()) {
+		fprintf(stderr, "failed to load tff font module!\n");
+		return -1;
+	}
+
+    *fonte = al_load_ttf_font("OpenSans_Condensed-Bold.ttf", 24, 0);
+    if (!*fonte) {
+     fprintf(stderr, "Failed to load font.\n");
+        return -1;
+    }
+
     // Initialize primitives addon
     if (!al_init_primitives_addon())
     {
@@ -27,6 +43,7 @@ int initialize_Allegro(ALLEGRO_DISPLAY **display,
         al_destroy_display(*display);
         return -1;
     }
+
 
     *event_queue = al_create_event_queue();
     if (!*event_queue)

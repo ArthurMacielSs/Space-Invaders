@@ -1,4 +1,6 @@
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 
 //constantes
 extern const int SCREEN_W;
@@ -47,7 +49,9 @@ typedef struct Alien {
 
 
 //allegroFunctions
-int initialize_Allegro(ALLEGRO_DISPLAY **display,ALLEGRO_EVENT_QUEUE **event_queue,ALLEGRO_TIMER **timer);
+int initialize_Allegro(ALLEGRO_DISPLAY **display, 
+                      ALLEGRO_EVENT_QUEUE **event_queue, 
+                      ALLEGRO_TIMER **timer, ALLEGRO_FONT **fonte);
 
 
 //criatingInvadersElements
