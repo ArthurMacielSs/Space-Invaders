@@ -140,7 +140,7 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-		printf("\nfalha ao atualizar o recorde");
+		printf("\recorde não atualizado, o recorde do jogo ainda eh %d pontos", recorde);
 		return -1;
 	}
 

@@ -70,7 +70,7 @@ int colisao_alien_solo(Alien alien)
 	{
 		if (alien.y + ALIEN_H >= SCREEN_H - GRASS_H)
 		{
-			printf("\n morreu por grama");
+			printf("\n os aliens chegaram ao chao");
 			return 1;
 		}
 		else
@@ -90,7 +90,6 @@ int colisao_all_alien_solo(int playng, int linha, int coluna, Alien bloco[linha]
 			playng = colisao_alien_solo(bloco[i][j]);
 			if (playng == 1)
 			{
-				*pontuacao -= 500;
 				break;
 				return playng;
 			}
@@ -108,8 +107,7 @@ int colisao_alien_nave(Alien alien, Nave nave, int *pontuacao)
 	{
 		if ((alien.y + ALIEN_H >= nave.y) && (((alien.x >= nave.x - NAVE_W / 2) && (alien.x <= nave.x + NAVE_W / 2)) || ((alien.x + ALIEN_W >= nave.x - NAVE_W / 2) && (alien.x + ALIEN_W <= nave.x + NAVE_W / 2))))
 		{
-			printf("\ncolidiu");
-			*pontuacao -= 500;
+			printf("\ncolidiu com a nave");
 			return 0;
 		}
 		else
@@ -171,7 +169,7 @@ void shot_hit(struct Shot *shot, int linha, int coluna, Alien bloco[linha][colun
 						shot->active = 0;
 						bloco[i][j].is_active = 0;
 						*pontuacao += 100;
-						printf("\n %d", bloco[i][j].is_active);
+						//printf("\n %d", bloco[i][j].is_active);
 					}
 				}
 			}
