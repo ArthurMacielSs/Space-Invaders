@@ -14,11 +14,13 @@ int main(int argc, char **argv)
 	ALLEGRO_TIMER *timer = NULL;
 	ALLEGRO_FONT *font = NULL;
 	ALLEGRO_FONT *bigFont = NULL;
+	ALLEGRO_BITMAP *alien_sprite = NULL;
+
 	
 
 	FILE *arq;
 
-	if (initialize_Allegro(&display, &event_queue, &timer, &font, &bigFont) != 0)
+	if (initialize_Allegro(&display, &event_queue, &timer, &font, &bigFont, &alien_sprite) != 0)
 	{
 		return -1;
 	}
@@ -73,7 +75,7 @@ int main(int argc, char **argv)
 				draw_shots(&shots);
 
 				
-				 result = drawAllAliens(ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, &phase);
+				 result = drawAllAliens(ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, &phase, alien_sprite);
 				
 				
 				if (result==2){

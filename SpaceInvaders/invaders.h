@@ -54,8 +54,8 @@ struct Shot
 
 // allegroFunctions
 int initialize_Allegro(ALLEGRO_DISPLAY **display,
-					   ALLEGRO_EVENT_QUEUE **event_queue,
-					   ALLEGRO_TIMER **timer, ALLEGRO_FONT **fonte,ALLEGRO_FONT **bigFonte );
+                       ALLEGRO_EVENT_QUEUE **event_queue,
+                       ALLEGRO_TIMER **timer, ALLEGRO_FONT **font, ALLEGRO_FONT **bigFont, ALLEGRO_BITMAP **alien_sprite);
 void show_start_screen(ALLEGRO_FONT **font,ALLEGRO_FONT **big_font );
 void show_end_screen(ALLEGRO_FONT **font, ALLEGRO_FONT **big_font,int pontuacao, int recorde);
 
@@ -63,11 +63,11 @@ void show_end_screen(ALLEGRO_FONT **font, ALLEGRO_FONT **big_font,int pontuacao,
 // criatingInvadersElements
 void initNave(Nave *nave);
 void initAlien(Alien *alien, int x, int y, int phase);
-void draw_alien(Alien alien);
+void draw_alien(Alien alien, ALLEGRO_BITMAP *alien_sprite);
 void draw_scenario();
 void draw_nave(Nave nave);
 void initAllAliens(int linha, int coluna, Alien **bloco, int phase);
-int drawAllAliens(int linha, int coluna, Alien **bloco, int *phase);
+int drawAllAliens(int linha, int coluna, Alien **bloco, int *phase, ALLEGRO_BITMAP *alien_sprite);
 
 void init_shots(struct Shot *shots);
 void fire_shot(struct Shot *shots, float ship_x, float ship_y);

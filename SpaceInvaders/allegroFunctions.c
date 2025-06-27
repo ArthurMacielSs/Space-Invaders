@@ -3,11 +3,12 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_image.h>
 #include "invaders.h"
 
 int initialize_Allegro(ALLEGRO_DISPLAY **display,
                        ALLEGRO_EVENT_QUEUE **event_queue,
-                       ALLEGRO_TIMER **timer, ALLEGRO_FONT **font, ALLEGRO_FONT **bigFont)
+                       ALLEGRO_TIMER **timer, ALLEGRO_FONT **font, ALLEGRO_FONT **bigFont, ALLEGRO_BITMAP **alien_sprite)
 {
     if (!al_init())
     {
@@ -21,7 +22,14 @@ int initialize_Allegro(ALLEGRO_DISPLAY **display,
         fprintf(stderr, "failed to create display!\n");
         return -1;
     }
+    al_init_image_addon(); 
 
+
+        *alien_sprite = al_load_bitmap("alien.png");
+        if (!alien_sprite) {
+            fprintf(stderr, "Failed to load alien sprite!\n");
+            return -1;
+        }
     // funções necessárias para escrever
     al_init_font_addon();
 

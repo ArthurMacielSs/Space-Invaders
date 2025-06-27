@@ -38,12 +38,16 @@ void initAllAliens(int linha, int coluna, Alien **bloco, int phase)
 	}
 }
 
-void draw_alien(Alien alien)
+void draw_alien(Alien alien, ALLEGRO_BITMAP *alien_sprite)
 {
-	al_draw_filled_rectangle(alien.x, alien.y, alien.x + ALIEN_W, alien.y + ALIEN_H, alien.cor);
+	//al_draw_filled_rectangle(alien.x, alien.y, alien.x + ALIEN_W, alien.y + ALIEN_H, alien.cor);
+	al_draw_scaled_bitmap(alien_sprite,
+                      0, 0, al_get_bitmap_width(alien_sprite), al_get_bitmap_height(alien_sprite),
+                      alien.x, alien.y, ALIEN_W, ALIEN_H, 
+                      0);
 }
 
-int drawAllAliens(int linha, int coluna, Alien **bloco, int *phase)
+int drawAllAliens(int linha, int coluna, Alien **bloco, int *phase, ALLEGRO_BITMAP *alien_sprite)
 {
 	int active = 0;
 	int verifica = 0;
@@ -53,7 +57,7 @@ int drawAllAliens(int linha, int coluna, Alien **bloco, int *phase)
 		{
 			if (bloco[i][j].is_active)
 			{
-				draw_alien(bloco[i][j]);
+				draw_alien(bloco[i][j], alien_sprite);
 				verifica = 1;
 				active = 1;
 			}
