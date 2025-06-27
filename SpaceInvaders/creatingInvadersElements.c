@@ -10,7 +10,7 @@ void initNave(Nave *nave)
 	nave->vel = SHIP_SPEED;
 	nave->dir = 0;
 	nave->esq = 0;
-	nave->cor = al_map_rgb(0, 0, 255);
+	nave->cor = al_map_rgb(0, 255, 255);
 }
 
 void initAlien(Alien *alien, int x, int y, int phase)
@@ -79,7 +79,7 @@ int drawAllAliens(int linha, int coluna, Alien **bloco, int *phase, ALLEGRO_BITM
 void draw_scenario()
 {
 	al_clear_to_color(al_map_rgb(0, 0, 0));
-	al_draw_filled_rectangle(0, (SCREEN_H - GRASS_H), SCREEN_W, SCREEN_H, al_map_rgb(0, 245, 0));
+	al_draw_filled_rectangle(0, (SCREEN_H - GRASS_H), SCREEN_W, SCREEN_H, al_map_rgb(128, 0, 128));
 }
 
 void draw_nave(Nave nave)
