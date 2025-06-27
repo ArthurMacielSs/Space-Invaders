@@ -22,7 +22,7 @@ int alloca_alien(int rows, int cols, Alien ***alien)
 			}
 			free(*alien);
 			*alien = NULL;
-			return 0; 
+			return 0;
 		}
 	}
 
@@ -31,17 +31,17 @@ int alloca_alien(int rows, int cols, Alien ***alien)
 
 int free_alien(int rows, Alien ***alien)
 {
-	    if (*alien == NULL)
-    {
-        return 1; 
-    }
+	if (*alien == NULL)
+	{
+		return 1;
+	}
 
-    for (int i = 0; i < rows; i++)
-    {
-        free((*alien)[i]); 
-    }
+	for (int i = 0; i < rows; i++)
+	{
+		free((*alien)[i]);
+	}
 
-    free(*alien);          
-    *alien = NULL;         
-    return 1;
+	free(*alien);
+	*alien = NULL;
+	return 1;
 }

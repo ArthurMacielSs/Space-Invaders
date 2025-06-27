@@ -6,8 +6,6 @@
 // constantes
 #define PHASES_NUMBER 6
 
-
-
 extern const int SCREEN_W;
 extern const int SCREEN_H;
 extern const int GRASS_H;
@@ -54,11 +52,10 @@ struct Shot
 
 // allegroFunctions
 int initialize_Allegro(ALLEGRO_DISPLAY **display,
-                       ALLEGRO_EVENT_QUEUE **event_queue,
-                       ALLEGRO_TIMER **timer, ALLEGRO_FONT **font, ALLEGRO_FONT **bigFont, ALLEGRO_BITMAP **alien_sprite);
-void show_start_screen(ALLEGRO_FONT **font,ALLEGRO_FONT **big_font );
-void show_end_screen(ALLEGRO_FONT **font, ALLEGRO_FONT **big_font,int pontuacao, int recorde);
-
+					   ALLEGRO_EVENT_QUEUE **event_queue,
+					   ALLEGRO_TIMER **timer, ALLEGRO_FONT **font, ALLEGRO_FONT **bigFont, ALLEGRO_BITMAP **alien_sprite);
+void show_start_screen(ALLEGRO_FONT **font, ALLEGRO_FONT **big_font);
+void show_end_screen(ALLEGRO_FONT **font, ALLEGRO_FONT **big_font, int pontuacao, int recorde);
 
 // criatingInvadersElements
 void initNave(Nave *nave);
@@ -68,15 +65,12 @@ void draw_scenario();
 void draw_nave(Nave nave);
 void initAllAliens(int linha, int coluna, Alien **bloco, int phase);
 int drawAllAliens(int linha, int coluna, Alien **bloco, int *phase, ALLEGRO_BITMAP *alien_sprite);
-
 void init_shots(struct Shot *shots);
 void fire_shot(struct Shot *shots, float ship_x, float ship_y);
 void draw_shots(struct Shot *shots);
 
-
 // updatingInvadersElements
 void update_nave(Nave *nave);
-// void update_alien (Alien *alien);
 int colisao_alien_solo(Alien alien);
 void update_all_aliens(int linha, int coluna, Alien **bloco);
 int colisao_all_alien_solo(int playng, int linha, int coluna, Alien **bloco, int *pontuacao);
@@ -89,7 +83,6 @@ int colisao_all_alien_nave(int linha, int coluna, Alien **bloco, Nave nave, int 
 int pega_recorde(FILE **arq, int *recorde);
 int adiciona_recorde(FILE **arq, int *recorde, int *pontuacao);
 
-
-//allocationFunctions
+// allocationFunctions
 int alloca_alien(int rows, int cols, Alien ***alien);
 int free_alien(int rows, Alien ***alien);

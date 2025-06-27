@@ -16,8 +16,6 @@ int main(int argc, char **argv)
 	ALLEGRO_FONT *bigFont = NULL;
 	ALLEGRO_BITMAP *alien_sprite = NULL;
 
-	
-
 	FILE *arq;
 
 	if (initialize_Allegro(&display, &event_queue, &timer, &font, &bigFont, &alien_sprite) != 0)
@@ -25,103 +23,105 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	
-
 	char text[50];
 	int playing = 1, waitingToStart, waitingToEnd;
-	int pontuacao = 0, recorde, phase=0, result;
+	int score = 0, record, phase = 0, result;
 
-	if (pega_recorde(&arq, &recorde))
-	{  
-		
+	if (pega_recorde(&arq, &record))
+	{
+
 		Alien **alien;
-		if(!alloca_alien(ROW_ALIEN[phase],COLUMN_ALIEN[phase],&alien)){
+		if (!alloca_alien(ROW_ALIEN[phase], COLUMN_ALIEN[phase], &alien))
+		{
 			printf("Falha na alocação de memória!\n");
 			return -1;
-		}	
-    
+		}
+
 		struct Shot shots;
-		Nave nave;
+		Nave ship;
 
 		init_shots(&shots);
-		initNave(&nave);
+		initNave(&ship);
 		initAllAliens(ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, phase);
 
 		show_start_screen(&font, &bigFont);
 
 		ALLEGRO_EVENT ev;
 		waitingToStart = 1;
-		while (waitingToStart) {
+		while (waitingToStart)
+		{
 			al_wait_for_event(event_queue, &ev);
-			if (ev.type == ALLEGRO_EVENT_KEY_DOWN || ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) {
+			if (ev.type == ALLEGRO_EVENT_KEY_DOWN || ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+			{
 				waitingToStart = 0;
 			}
 		}
 
-		
 		while (playing)
 		{
-			
+
 			al_wait_for_event(event_queue, &ev);
 			if (ev.type == ALLEGRO_EVENT_TIMER)
 			{
-				update_nave(&nave);
+				update_nave(&ship);
 				update_all_aliens(ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien);
 				update_shots(&shots);
-				shot_hit(&shots, ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, &pontuacao);
+				shot_hit(&shots, ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, &score);
 
 				draw_scenario();
-				draw_nave(nave);
+				draw_nave(ship);
 				draw_shots(&shots);
 
-				
-				 result = drawAllAliens(ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, &phase, alien_sprite);
-				
-				
-				if (result==2){
-						if(free_alien(ROW_ALIEN[phase],&alien)){
+				result = drawAllAliens(ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, &phase, alien_sprite);
+
+				if (result == 2)
+				{
+					if (free_alien(ROW_ALIEN[phase], &alien))
+					{
 						phase++;
 
-						if(!alloca_alien(ROW_ALIEN[phase],COLUMN_ALIEN[phase],&alien)){
+						if (!alloca_alien(ROW_ALIEN[phase], COLUMN_ALIEN[phase], &alien))
+						{
 							printf("Falha na alocação de memória!\n");
 							return -1;
-						}	
+						}
 						initAllAliens(ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, phase);
 						init_shots(&shots);
-						playing=1;
+						playing = 1;
+					}
+				}
+				else if (result == 0)
+				{
+					show_end_screen(&font, &bigFont, score, record);
+
+					waitingToEnd = 1;
+					while (waitingToEnd)
+					{
+						al_wait_for_event(event_queue, &ev);
+						if (ev.type == ALLEGRO_EVENT_KEY_DOWN || ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN || ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+						{
+							waitingToEnd = 0;
 						}
 					}
-				else if(result==0){
-					show_end_screen(&font, &bigFont,pontuacao, recorde);
-
-					    waitingToEnd = 1;
-						while (waitingToEnd) {
-							al_wait_for_event(event_queue, &ev);
-							if (ev.type == ALLEGRO_EVENT_KEY_DOWN || ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN || ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
-								waitingToEnd = 0;
-							}
-						}
-					playing=0;
+					playing = 0;
 				}
-				
-				
-				sprintf(text, "Score: %d", pontuacao);
+
+				sprintf(text, "Score: %d", score);
 				al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W - 150, 10, 0, text);
 
-				sprintf(text, "Fase: %d", phase+1);
-				al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W/2 - 60, 10, 0, text);
+				sprintf(text, "Fase: %d", phase + 1);
+				al_draw_text(font, al_map_rgb(255, 255, 255), SCREEN_W / 2 - 60, 10, 0, text);
 
-				sprintf(text, "Record: %d", recorde);
+				sprintf(text, "Record: %d", record);
 				al_draw_text(font, al_map_rgb(255, 255, 255), 10, 10, 0, text);
 
-		
 				if (playing)
 				{
-					playing = !colisao_all_alien_solo(playing, ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, &pontuacao);
+					playing = !colisao_all_alien_solo(playing, ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, &score);
 				}
 				if (playing)
 				{
-					playing = colisao_all_alien_nave(ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, nave, &pontuacao);
+					playing = colisao_all_alien_nave(ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, ship, &score);
 				}
 
 				al_flip_display();
@@ -138,20 +138,27 @@ int main(int argc, char **argv)
 
 			else if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
 			{
-				// printf("\ncodigo tecla: %d", ev.keyboard.keycode);
 
 				switch (ev.keyboard.keycode)
 				{
 				case ALLEGRO_KEY_A:
-					nave.esq = 1;
+					ship.esq = 1;
 					break;
 
 				case ALLEGRO_KEY_D:
-					nave.dir = 1;
+					ship.dir = 1;
+					break;
+
+				case ALLEGRO_KEY_LEFT:
+					ship.esq = 1;
+					break;
+
+				case ALLEGRO_KEY_RIGHT:
+					ship.dir = 1;
 					break;
 
 				case ALLEGRO_KEY_SPACE:
-					fire_shot(&shots, nave.x, (SCREEN_H - GRASS_H - NAVE_H));
+					fire_shot(&shots, ship.x, (SCREEN_H - GRASS_H - NAVE_H));
 					break;
 
 				default:
@@ -165,11 +172,19 @@ int main(int argc, char **argv)
 				switch (ev.keyboard.keycode)
 				{
 				case ALLEGRO_KEY_A:
-					nave.esq = 0;
+					ship.esq = 0;
 					break;
 
 				case ALLEGRO_KEY_D:
-					nave.dir = 0;
+					ship.dir = 0;
+					break;
+
+				case ALLEGRO_KEY_LEFT:
+					ship.esq = 0;
+					break;
+
+				case ALLEGRO_KEY_RIGHT:
+					ship.dir = 0;
 					break;
 
 				case ALLEGRO_KEY_SPACE:
@@ -186,18 +201,16 @@ int main(int argc, char **argv)
 		printf("\n código encerrado");
 		return -1;
 	}
-	if (adiciona_recorde(&arq, &recorde, &pontuacao))
+	if (adiciona_recorde(&arq, &record, &score))
 	{
 		printf("\nparabéns, recorde atualizado");
 		return 0;
 	}
 	else
 	{
-		printf("\n recorde não atualizado, o recorde do jogo ainda eh %d pontos", recorde);
+		printf("\n recorde não atualizado, o recorde do jogo ainda eh %d pontos", record);
 		return -1;
 	}
 
 	return 0;
 }
-
-// pq qnd acessa vetor n precisa

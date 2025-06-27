@@ -40,11 +40,10 @@ void initAllAliens(int linha, int coluna, Alien **bloco, int phase)
 
 void draw_alien(Alien alien, ALLEGRO_BITMAP *alien_sprite)
 {
-	//al_draw_filled_rectangle(alien.x, alien.y, alien.x + ALIEN_W, alien.y + ALIEN_H, alien.cor);
 	al_draw_scaled_bitmap(alien_sprite,
-                      0, 0, al_get_bitmap_width(alien_sprite), al_get_bitmap_height(alien_sprite),
-                      alien.x, alien.y, ALIEN_W, ALIEN_H, 
-                      0);
+						  0, 0, al_get_bitmap_width(alien_sprite), al_get_bitmap_height(alien_sprite),
+						  alien.x, alien.y, ALIEN_W, ALIEN_H,
+						  0);
 }
 
 int drawAllAliens(int linha, int coluna, Alien **bloco, int *phase, ALLEGRO_BITMAP *alien_sprite)
@@ -79,7 +78,6 @@ int drawAllAliens(int linha, int coluna, Alien **bloco, int *phase, ALLEGRO_BITM
 
 void draw_scenario()
 {
-	// pinta a tela de preto
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 	al_draw_filled_rectangle(0, (SCREEN_H - GRASS_H), SCREEN_W, SCREEN_H, al_map_rgb(0, 245, 0));
 }
@@ -101,7 +99,7 @@ void fire_shot(struct Shot *shots, float ship_x, float ship_y)
 	{
 		shots->x = ship_x;
 		shots->y = ship_y;
-		shots->speed = -SHOT_SPEED; // negative because it goes up
+		shots->speed = -SHOT_SPEED;
 		shots->active = 1;
 	}
 }
@@ -113,7 +111,3 @@ void draw_shots(struct Shot *shots)
 		al_draw_filled_rectangle(shots->x - 2, shots->y, shots->x + 2, shots->y + 10, al_map_rgb(255, 255, 0));
 	}
 }
-
-
-	
-

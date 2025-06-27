@@ -2,37 +2,26 @@
 #include <stdio.h>
 #include <allegro5/allegro_primitives.h>
 
-void update_nave(Nave *nave)
+void update_nave(Nave *ship)
 {
-	if (nave->dir && nave->x + nave->vel <= SCREEN_W)
+	if (ship->dir && ship->x + ship->vel <= SCREEN_W)
 	{
-		nave->x += nave->vel;
+		ship->x += ship->vel;
 	}
-	if (nave->esq && nave->x - nave->vel >= 0)
+	if (ship->esq && ship->x - ship->vel >= 0)
 	{
-		nave->x -= nave->vel;
+		ship->x -= ship->vel;
 	}
 }
 
-/*void update_alien (Alien *alien){
-// alien x vel fica neg
-	if(alien->x + ALIEN_W + alien->x_vel > SCREEN_W || alien->x + alien->x_vel < 0) {
-		alien->y += alien->y_vel;
-		alien->x_vel *= -1;
-	}
-	alien->x += alien->x_vel;
-}*/
-
-// certificar que entendi
-void update_all_aliens(int linha, int coluna, Alien **bloco)
+void update_all_aliens(int row, int col, Alien **matrix_alien)
 {
 	int should_reverse = 0;
-	for (int i = 0; i < linha; i++)
+	for (int i = 0; i < row; i++)
 	{
-		for (int j = 0; j < coluna; j++)
+		for (int j = 0; j < col; j++)
 		{
-			Alien *teste = &bloco[i][j];
-			// pq usa teste->is_active ao inves de *teste->is_active
+			Alien *teste = &matrix_alien[i][j];
 			if (teste->is_active == 1)
 			{
 				if ((teste->x + ALIEN_W + teste->x_vel > SCREEN_W) || (teste->x + teste->x_vel < 0))
@@ -46,14 +35,13 @@ void update_all_aliens(int linha, int coluna, Alien **bloco)
 			break;
 	}
 
-	for (int i = 0; i < linha; i++)
+	for (int i = 0; i < row; i++)
 	{
-		for (int j = 0; j < coluna; j++)
+		for (int j = 0; j < col; j++)
 		{
-			// pq usa &
-			if (&bloco[i][j])
+			if (&matrix_alien[i][j])
 			{
-				Alien *teste = &bloco[i][j];
+				Alien *teste = &matrix_alien[i][j];
 				if (should_reverse)
 				{
 					teste->y += teste->y_vel;
@@ -80,14 +68,14 @@ int colisao_alien_solo(Alien alien)
 	}
 }
 
-int colisao_all_alien_solo(int playng, int linha, int coluna, Alien **bloco, int *pontuacao)
+int colisao_all_alien_solo(int playng, int row, int col, Alien **matrix_alien, int *score)
 {
 	playng = 0;
-	for (int i = 0; i < linha; i++)
+	for (int i = 0; i < row; i++)
 	{
-		for (int j = 0; j < coluna; j++)
+		for (int j = 0; j < col; j++)
 		{
-			playng = colisao_alien_solo(bloco[i][j]);
+			playng = colisao_alien_solo(matrix_alien[i][j]);
 			if (playng == 1)
 			{
 				break;
@@ -101,11 +89,11 @@ int colisao_all_alien_solo(int playng, int linha, int coluna, Alien **bloco, int
 	}
 	return playng;
 }
-int colisao_alien_nave(Alien alien, Nave nave, int *pontuacao)
+int colisao_alien_nave(Alien alien, Nave ship, int *score)
 {
 	if (alien.is_active == 1)
 	{
-		if ((alien.y + ALIEN_H >= nave.y) && (((alien.x >= nave.x - NAVE_W / 2) && (alien.x <= nave.x + NAVE_W / 2)) || ((alien.x + ALIEN_W >= nave.x - NAVE_W / 2) && (alien.x + ALIEN_W <= nave.x + NAVE_W / 2))))
+		if ((alien.y + ALIEN_H >= ship.y) && (((alien.x >= ship.x - NAVE_W / 2) && (alien.x <= ship.x + NAVE_W / 2)) || ((alien.x + ALIEN_W >= ship.x - NAVE_W / 2) && (alien.x + ALIEN_W <= ship.x + NAVE_W / 2))))
 		{
 			printf("\ncolidiu com a nave");
 			return 0;
@@ -115,18 +103,17 @@ int colisao_alien_nave(Alien alien, Nave nave, int *pontuacao)
 			return 1;
 		}
 	}
-	// ver pq pus esse return1
 	return 1;
 }
 
-int colisao_all_alien_nave(int linha, int coluna, Alien **bloco, Nave nave, int *pontuacao)
+int colisao_all_alien_nave(int row, int col, Alien **matrix_alien, Nave ship, int *score)
 {
 	int playing = 1;
-	for (int i = 0; i < linha; i++)
+	for (int i = 0; i < row; i++)
 	{
-		for (int j = 0; j < coluna; j++)
+		for (int j = 0; j < col; j++)
 		{
-			playing = colisao_alien_nave(bloco[i][j], nave, pontuacao);
+			playing = colisao_alien_nave(matrix_alien[i][j], ship, score);
 			if (playing == 0)
 			{
 				return playing;
@@ -141,7 +128,7 @@ int colisao_all_alien_nave(int linha, int coluna, Alien **bloco, Nave nave, int 
 	}
 	return playing;
 }
-// pq não usa ponteiro ou referencia
+
 void update_shots(struct Shot *shots)
 {
 	if (shots->active)
@@ -154,22 +141,21 @@ void update_shots(struct Shot *shots)
 	}
 }
 
-void shot_hit(struct Shot *shot, int linha, int coluna, Alien **bloco, int *pontuacao)
+void shot_hit(struct Shot *shot, int row, int col, Alien **alien_matrix, int *score)
 {
 	if (shot->active)
 	{
-		for (int i = 0; i < linha; i++)
+		for (int i = 0; i < row; i++)
 		{
-			for (int j = 0; j < coluna; j++)
+			for (int j = 0; j < col; j++)
 			{
-				if (bloco[i][j].is_active)
+				if (alien_matrix[i][j].is_active)
 				{
-					if (((shot->y >= bloco[i][j].y) && (shot->y <= bloco[i][j].y + ALIEN_H)) && ((shot->x + 2 >= bloco[i][j].x) && (shot->x + 2 <= bloco[i][j].x + ALIEN_W)))
+					if (((shot->y >= alien_matrix[i][j].y) && (shot->y <= alien_matrix[i][j].y + ALIEN_H)) && ((shot->x + 2 >= alien_matrix[i][j].x) && (shot->x + 2 <= alien_matrix[i][j].x + ALIEN_W)))
 					{
 						shot->active = 0;
-						bloco[i][j].is_active = 0;
-						*pontuacao += 100;
-						//printf("\n %d", bloco[i][j].is_active);
+						alien_matrix[i][j].is_active = 0;
+						*score += 100;
 					}
 				}
 			}
