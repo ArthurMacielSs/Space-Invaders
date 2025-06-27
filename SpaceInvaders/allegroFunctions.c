@@ -4,11 +4,14 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include "invaders.h"
 
 int initialize_Allegro(ALLEGRO_DISPLAY **display,
                        ALLEGRO_EVENT_QUEUE **event_queue,
-                       ALLEGRO_TIMER **timer, ALLEGRO_FONT **font, ALLEGRO_FONT **bigFont, ALLEGRO_BITMAP **alien_sprite)
+                       ALLEGRO_TIMER **timer, ALLEGRO_FONT **font, ALLEGRO_FONT **bigFont,
+                       ALLEGRO_BITMAP **alien_sprite,ALLEGRO_SAMPLE **background_music,ALLEGRO_SAMPLE **collision_sound)
 {
     if (!al_init())
     {
@@ -30,6 +33,18 @@ int initialize_Allegro(ALLEGRO_DISPLAY **display,
         fprintf(stderr, "Failed to load alien sprite!\n");
         return -1;
     }
+
+        al_install_audio();
+        al_init_acodec_addon();
+        al_reserve_samples(10);
+
+        *background_music = al_load_sample("assets/music.wav");
+        *collision_sound = al_load_sample("assets/hit.wav");
+
+        if (!background_music || !collision_sound) {
+            printf("Failed to load sound files.\n");
+            return -1;
+}
    
     al_init_font_addon();
 
@@ -99,7 +114,7 @@ void show_start_screen(ALLEGRO_FONT **font, ALLEGRO_FONT **big_font)
 {
     al_clear_to_color(al_map_rgb(0, 0, 0));
     al_draw_text(*big_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, 60, ALLEGRO_ALIGN_CENTER, "SPACE INVADERS");
-    al_draw_text(*font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + 20, ALLEGRO_ALIGN_CENTER, "Click or press any key to start");
+    al_draw_text(*font, al_map_rgb(255, 255, 255), SCREEN_W / 2, SCREEN_H / 2 + 20, ALLEGRO_ALIGN_CENTER, "Aperte qualquer tecla para continuar...");
     al_flip_display();
 }
 
@@ -107,7 +122,7 @@ void show_end_screen(ALLEGRO_FONT **font, ALLEGRO_FONT **big_font, int pontuacao
 {
     al_clear_to_color(al_map_rgb(0, 0, 0));
 
-    al_draw_text(*big_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, 60, ALLEGRO_ALIGN_CENTER, "Game Over!");
+    al_draw_text(*big_font, al_map_rgb(255, 255, 255), SCREEN_W / 2, 60, ALLEGRO_ALIGN_CENTER, "Fim de jogo!");
 
     char text[100];
     sprintf(text, " Pontuacao: %d", pontuacao);

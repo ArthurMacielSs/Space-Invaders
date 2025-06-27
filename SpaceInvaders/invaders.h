@@ -1,6 +1,8 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include <stdio.h>
 
 // constantes
@@ -52,8 +54,9 @@ struct Shot
 
 // allegroFunctions
 int initialize_Allegro(ALLEGRO_DISPLAY **display,
-					   ALLEGRO_EVENT_QUEUE **event_queue,
-					   ALLEGRO_TIMER **timer, ALLEGRO_FONT **font, ALLEGRO_FONT **bigFont, ALLEGRO_BITMAP **alien_sprite);
+                       ALLEGRO_EVENT_QUEUE **event_queue,
+                       ALLEGRO_TIMER **timer, ALLEGRO_FONT **font, ALLEGRO_FONT **bigFont,
+                       ALLEGRO_BITMAP **alien_sprite,ALLEGRO_SAMPLE **background_music,ALLEGRO_SAMPLE **collision_sound);
 void show_start_screen(ALLEGRO_FONT **font, ALLEGRO_FONT **big_font);
 void show_end_screen(ALLEGRO_FONT **font, ALLEGRO_FONT **big_font, int pontuacao, int recorde);
 
@@ -75,7 +78,7 @@ int colisao_alien_solo(Alien alien);
 void update_all_aliens(int linha, int coluna, Alien **bloco);
 int colisao_all_alien_solo(int playng, int linha, int coluna, Alien **bloco, int *pontuacao);
 void update_shots(struct Shot *shots);
-void shot_hit(struct Shot *shot, int linha, int coluna, Alien **bloco, int *pontuacao);
+void shot_hit(struct Shot *shot, int row, int col, Alien **alien_matrix, int *score,ALLEGRO_SAMPLE *collision_sound);
 int colisao_alien_nave(Alien alien, Nave nave, int *pontuacao);
 int colisao_all_alien_nave(int linha, int coluna, Alien **bloco, Nave nave, int *pontuacao);
 

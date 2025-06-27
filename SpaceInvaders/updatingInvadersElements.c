@@ -1,6 +1,8 @@
 #include "invaders.h"
 #include <stdio.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 
 void update_nave(Nave *ship)
 {
@@ -141,7 +143,7 @@ void update_shots(struct Shot *shots)
 	}
 }
 
-void shot_hit(struct Shot *shot, int row, int col, Alien **alien_matrix, int *score)
+void shot_hit(struct Shot *shot, int row, int col, Alien **alien_matrix, int *score,ALLEGRO_SAMPLE *collision_sound)
 {
 	if (shot->active)
 	{
@@ -153,6 +155,7 @@ void shot_hit(struct Shot *shot, int row, int col, Alien **alien_matrix, int *sc
 				{
 					if (((shot->y >= alien_matrix[i][j].y) && (shot->y <= alien_matrix[i][j].y + ALIEN_H)) && ((shot->x + 2 >= alien_matrix[i][j].x) && (shot->x + 2 <= alien_matrix[i][j].x + ALIEN_W)))
 					{
+						al_play_sample(collision_sound, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_ONCE, NULL);
 						shot->active = 0;
 						alien_matrix[i][j].is_active = 0;
 						*score += 100;

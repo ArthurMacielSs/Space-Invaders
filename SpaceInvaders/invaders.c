@@ -4,6 +4,8 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include <stdlib.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 #include "invaders.h"
 
 int main(int argc, char **argv)
@@ -15,17 +17,23 @@ int main(int argc, char **argv)
 	ALLEGRO_FONT *font = NULL;
 	ALLEGRO_FONT *bigFont = NULL;
 	ALLEGRO_BITMAP *alien_sprite = NULL;
+	ALLEGRO_SAMPLE *background_music = NULL;
+	ALLEGRO_SAMPLE *collision_sound = NULL;
+	
 
 	FILE *arq;
 
-	if (initialize_Allegro(&display, &event_queue, &timer, &font, &bigFont, &alien_sprite) != 0)
+	if (initialize_Allegro(&display, &event_queue, &timer, &font, &bigFont, &alien_sprite, &background_music,&collision_sound) != 0)
 	{
 		return -1;
 	}
 
+	al_play_sample(background_music, 1.0, 0.0, 1.0, ALLEGRO_PLAYMODE_LOOP, NULL);
+
+
 	char text[50];
 	int playing = 1, waitingToStart, waitingToEnd;
-	int score = 0, record, phase = 0, result;
+	int score = 0, record, phase = 4, result;
 
 	if (pega_recorde(&arq, &record))
 	{
@@ -66,7 +74,7 @@ int main(int argc, char **argv)
 				update_nave(&ship);
 				update_all_aliens(ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien);
 				update_shots(&shots);
-				shot_hit(&shots, ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, &score);
+				shot_hit(&shots, ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, &score,collision_sound);
 
 				draw_scenario();
 				draw_nave(ship);
@@ -117,11 +125,39 @@ int main(int argc, char **argv)
 
 				if (playing)
 				{
-					playing = !colisao_all_alien_solo(playing, ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, &score);
+					int temp= !colisao_all_alien_solo(playing, ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, &score);
+					if(temp==0){
+					show_end_screen(&font, &bigFont, score, record);
+
+					waitingToEnd = 1;
+					while (waitingToEnd)
+					{
+						al_wait_for_event(event_queue, &ev);
+						if (ev.type == ALLEGRO_EVENT_KEY_DOWN || ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN || ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+						{
+							waitingToEnd = 0;
+						}
+					}
+				}
+					playing = temp;
 				}
 				if (playing)
-				{
-					playing = colisao_all_alien_nave(ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, ship, &score);
+				{	
+					int temp= !colisao_all_alien_solo(playing, ROW_ALIEN[phase], COLUMN_ALIEN[phase], alien, &score);
+					if(temp==0){
+					show_end_screen(&font, &bigFont, score, record);
+
+					waitingToEnd = 1;
+					while (waitingToEnd)
+					{
+						al_wait_for_event(event_queue, &ev);
+						if (ev.type == ALLEGRO_EVENT_KEY_DOWN || ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN || ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+						{
+							waitingToEnd = 0;
+						}
+					}
+				}
+					playing = temp;
 				}
 
 				al_flip_display();
@@ -212,5 +248,14 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
+	if (alien_sprite) {
+    al_destroy_bitmap(alien_sprite);}
+	if(background_music){
+	al_destroy_sample(background_music);}
+	if(collision_sound){
+	al_destroy_sample(collision_sound);}
 	return 0;
+
+
+
 }
