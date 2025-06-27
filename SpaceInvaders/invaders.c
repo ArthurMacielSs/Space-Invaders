@@ -33,7 +33,7 @@ int main(int argc, char **argv)
 
 	char text[50];
 	int playing = 1, waitingToStart, waitingToEnd;
-	int score = 0, record, phase = 4, result;
+	int score = 0, record, phase = 0, result;
 
 	if (pega_recorde(&arq, &record))
 	{
